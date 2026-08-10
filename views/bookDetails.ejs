@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= book.title %>
+    </title>
+    <style>
+        body {
+            background-color: #f6f3eb;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 30px 5%;
+            color: #222;
+        }
+
+        .top-red-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            margin-bottom: 40px;
+            background-color: #783535;
+            z-index: 100;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header a,
+        .header button {
+            background: none;
+            border: none;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .header a:hover {
+            transform: translateX(-4px);
+        }
+
+        .header button:hover {
+            color: #d32f2f;
+            transform: scale(1.15);
+        }
+
+        .cover-wrapper {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .cover-wrapper img {
+            width: 320px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .read-btn {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 40px auto;
+            background-color: #000;
+            color: #fff;
+            padding: 12px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .read-btn:hover {
+            background-color: #333;
+        }
+
+        .description {
+            width: 100%;
+        }
+
+        .description h3 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+        }
+
+        .description p {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .more-books-section {
+            margin-top: 60px;
+        }
+
+        .more-books-section h3 {
+            font-size: 20px;
+            color: #444;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .more-books-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 15px;
+        }
+
+        .more-books-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .more-books-container::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+
+        .small-card {
+            background-color: #fff;
+            padding: 12px;
+            border-radius: 6px;
+            min-width: 160px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .small-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .small-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            transition: opacity 0.3s ease;
+        }
+
+        .small-card:hover img {
+            opacity: 0.9;
+        }
+
+        .small-card .title {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0 0 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+
+        .small-card .author {
+            font-size: 12px;
+            color: #777;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-red-bar"></div>
+    <div class="container">
+
+        <div class="header">
+            <a href="/">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 26px; height: 26px;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+            </a>
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 28px; height: 28px;">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="cover-wrapper">
+            <img src="<%= book.formats['image/jpeg'] ? book.formats['image/jpeg'] : 'https://via.placeholder.com/200x300?text=No+Cover' %>"
+                alt="Cover of <%= book.title %>">
+        </div>
+
+        <% const readLink=book.formats['text/html'] || book.formats['application/epub+zip'] || '#' ; %>
+            <a href="<%= readLink %>" class="read-btn">Read</a>
+
+            <div class="description">
+                <h3>Description</h3>
+                <p>
+                    <strong>Subjects:</strong>
+                    <%= book.subjects ? book.subjects.join(', ') : ' Classic Literature' %><br><br>
+                        About the book - Dive into the classic world of <em>
+                            <%= book.title %>
+                        </em>. This text is provided for free by the Project Gutenberg library. Enjoy exploring themes
+                        of <%= book.bookshelves ? book.bookshelves.join(', ') : ' humanity and history' %>.
+                </p>
+            </div>
+
+            <div class="more-books-section">
+                <h3>More Books</h3>
+
+                <div class="more-books-container">
+                    <% similarBooks.forEach(function(simBook) { %>
+                        <a href="/book/<%= simBook.id %>" class="small-card">
+                            <img src="<%= simBook.formats['image/jpeg'] ? simBook.formats['image/jpeg'] : 'https://via.placeholder.com/120x160?text=No+Cover' %>"
+                                alt="<%= simBook.title %>">
+                            <p class="title">
+                                <%= simBook.title %>
+                            </p>
+                            <p class="author">
+                                <%= simBook.authors.length> 0 ? simBook.authors[0].name : "Unknown" %>
+                            </p>
+                        </a>
+                        <% }) %>
+                </div>
+            </div>
+
+    </div>
+</body>
+</html>
