@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - eBookShala</title>
+    <style>
+        :root {
+            --primary: #783535;
+            --primary-light: rgba(120, 53, 53, 0.1);
+            --primary-hover: #5a2828;
+            --bg-color: #F8F5E9;
+            --text-main: #1a1a1a;
+            --text-muted: #666;
+            --border-color: #eaeaea;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-container {
+            max-width: 1150px;
+            margin: 110px auto 60px auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        .profile-sidebar {
+            background: #fff;
+            width: 340px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            flex-shrink: 0;
+            position: sticky;
+            top: 110px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            box-sizing: border-box;
+        }
+
+        .profile-banner {
+            height: 140px;
+            background: linear-gradient(135deg, #783535 0%, #4a1f1f 100%);
+            width: 100%;
+            position: relative;
+        }
+
+        .profile-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+
+        .profile-info-container {
+            padding: 0 32px 32px 32px;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: -70px auto 16px auto;
+            z-index: 2;
+        }
+
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid #fff;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .profile-email {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin: 0 0 24px 0;
+            word-break: break-all;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -5px;
+            top: 10%;
+            height: 80%;
+            width: 1px;
+            background-color: var(--border-color);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .edit-btn {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-sizing: border-box;
+        }
+
+        .edit-btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(120, 53, 53, 0.25);
+        }
+
+        .profile-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            min-width: 0;
+        }
+
+        .section-box {
+            background: #fff;
+            padding: 32px;
+            border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .icon-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 15px;
+            padding: 48px 20px;
+            background: #fcfcfc;
+            border-radius: 16px;
+            border: 2px dashed var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .empty-state svg {
+            color: #d0d0d0;
+        }
+
+        .profile-book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 20px;
+        }
+
+        .profile-book-card {
+            background: #fff;
+            border-radius: 12px;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .profile-book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary);
+        }
+
+        .profile-book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .profile-book-info {
+            padding: 12px;
+        }
+
+        .profile-book-info .title {
+            font-size: 14px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .profile-book-info .author {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.25s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            padding: 4px;
+            border-radius: 50%;
+            display: flex;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: #222;
+        }
+
+        .modal-card h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .input-group input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            box-sizing: border-box;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 16px;
+            margin-top: 36px;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            padding: 14px;
+            border-radius: 12px;
+            flex: 1;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .save-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .save-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        .cancel-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1.5px solid var(--border-color);
+        }
+
+        .cancel-btn:hover {
+            background: #f0f0f0;
+            color: #222;
+        }
+
+        @media (max-width: 900px) {
+            .page-container {
+                flex-direction: column;
+                margin-top: 100px;
+                gap: 25px;
+            }
+
+            .profile-sidebar,
+            .profile-content {
+                width: 100%;
+            }
+
+            .profile-sidebar {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page-container {
+                padding: 0 16px;
+                margin-top: 90px;
+            }
+
+            .profile-banner {
+                height: 100px;
+            }
+
+            .avatar-wrapper {
+                width: 110px;
+                height: 110px;
+                margin-top: -55px;
+            }
+
+            .section-box {
+                padding: 24px 20px;
+            }
+
+            .modal-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .save-btn,
+            .cancel-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <%- include('partials/navBar') %>
+
+        <div class="page-container">
+
+            <div class="profile-sidebar">
+                <div class="profile-banner"></div>
+
+                <div class="profile-info-container">
+                    <div class="avatar-wrapper">
+                        <img src="<%= currentUser.profilePhoto ? currentUser.profilePhoto : 'https://ui-avatars.com/api/?name=' + currentUser.name + '&background=783535&color=fff&size=300&font-size=0.35&bold=true' %>"
+                            alt="Profile" class="profile-photo">
+                    </div>
+
+                    <h2 class="profile-name">
+                        <%= currentUser.name %>
+                    </h2>
+                    <p class="profile-email">
+                        <%= currentUser.email %>
+                    </p>
+
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">
+                                <%= currentUser.recentReads ? currentUser.recentReads.length : 0 %>
+                            </span>
+                            <span class="stat-label">Reads</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">
+                                <%= currentUser.bookmarks ? currentUser.bookmarks.length : 0 %>
+                            </span>
+                            <span class="stat-label">Saved</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">
+                                <%= currentUser.likedBooks ? currentUser.likedBooks.length : 0 %>
+                            </span>
+                            <span class="stat-label">Likes</span>
+                        </div>
+                    </div>
+
+                    <button class="edit-btn" onclick="openModal()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
+
+            <div class="profile-content">
+
+                <div class="section-box">
+                    <div class="section-header">
+                        <div class="icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <h3 class="section-title">Recent Reads</h3>
+                    </div>
+
+                    <% if (currentUser.recentReads && currentUser.recentReads.length> 0) { %>
+                        <div class="profile-book-grid">
+                            <% currentUser.recentReads.forEach(book=> { %>
+                                <a href="/book/<%= book.bookId %>" class="profile-book-card">
+                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
+                                        onerror="this.src='https://via.placeholder.com/150x200?text=No+Cover'"
+                                        alt="Cover">
+                                    <div class="profile-book-info">
+                                        <p class="title">
+                                            <%= book.title %>
+                                        </p>
+                                        <p class="author">
+                                            <%= book.author %>
+                                        </p>
+                                    </div>
+                                </a>
+                                <% }) %>
+                        </div>
+                        <% } else { %>
+                            <div class="empty-state">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                </svg>
+                                <span>Your reading history will appear here.</span>
+                            </div>
+                            <% } %>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-header">
+                        <div class="icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="section-title">My Bookmarks</h3>
+                    </div>
+
+                    <% if (currentUser.bookmarks && currentUser.bookmarks.length> 0) { %>
+                        <div class="profile-book-grid">
+                            <% currentUser.bookmarks.forEach(book=> { %>
+                                <a href="/book/<%= book.bookId %>" class="profile-book-card">
+                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
+                                        onerror="this.src='https://via.placeholder.com/150x200?text=No+Cover'"
+                                        alt="Cover">
+                                    <div class="profile-book-info">
+                                        <p class="title">
+                                            <%= book.title %>
+                                        </p>
+                                        <p class="author">
+                                            <%= book.author %>
+                                        </p>
+                                    </div>
+                                </a>
+                                <% }) %>
+                        </div>
+                        <% } else { %>
+                            <div class="empty-state">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span>Books you bookmark for later will be saved here.</span>
+                            </div>
+                            <% } %>
+                </div>
+
+                <div class="section-box">
+                    <div class="section-header">
+                        <div class="icon-badge">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3 class="section-title">Liked Books</h3>
+                    </div>
+
+                    <% if (currentUser.likedBooks && currentUser.likedBooks.length> 0) { %>
+                        <div class="profile-book-grid">
+                            <% currentUser.likedBooks.forEach(book=> { %>
+                                <a href="/book/<%= book.bookId %>" class="profile-book-card">
+                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
+                                        onerror="this.src='https://via.placeholder.com/150x200?text=No+Cover'"
+                                        alt="Cover">
+                                    <div class="profile-book-info">
+                                        <p class="title">
+                                            <%= book.title %>
+                                        </p>
+                                        <p class="author">
+                                            <%= book.author %>
+                                        </p>
+                                    </div>
+                                </a>
+                                <% }) %>
+                        </div>
+                        <% } else { %>
+                            <div class="empty-state">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path
+                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                    </path>
+                                </svg>
+                                <span>Heart your favorite books to add them to this list.</span>
+                            </div>
+                            <% } %>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="editModal">
+            <div class="modal-card">
+                <button class="close-btn" onclick="closeModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+
+                <h2>Edit Profile</h2>
+                <form action="/profile/edit" method="POST" enctype="multipart/form-data">
+
+                    <div class="input-group">
+                        <label for="name">Display Name</label>
+                        <input type="text" id="name" name="name" value="<%= currentUser.name %>" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Profile Picture</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="profilePhoto" name="profilePhoto" accept="image/png, image/jpeg"
+                                onchange="updateFileName(this)">
+                            <div class="upload-text" id="fileNameDisplay">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                    style="color: #783535;">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Click to browse or drag image here</span>
+                                <span style="font-size: 12px; font-weight: normal; margin-top: 4px;">Supports JPG, PNG
+                                    (Max 2MB)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-buttons">
+                        <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            const modal = document.getElementById('editModal');
+
+            function openModal() { modal.style.display = 'flex'; }
+            function closeModal() { modal.style.display = 'none'; }
+
+            window.onclick = function (event) {
+                if (event.target == modal) { closeModal(); }
+            }
+
+            function updateFileName(input) {
+                const display = document.getElementById('fileNameDisplay');
+                if (input.files && input.files.length > 0) {
+                    display.innerHTML = `
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <span style="color: #222; font-weight: 600; margin-top: 8px;">${input.files[0].name} selected</span>
+                `;
+                }
+            }
+        </script>
+</body>
+</html>
