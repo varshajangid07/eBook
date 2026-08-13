@@ -165,6 +165,10 @@ app.get('/', async (req, res) => {
 app.use('/book', bookRoute);
 app.use('/', userRoute);
 
+app.get('/catalog', (req, res) => {
+    res.render('catalog', { currentUser: req.user }); 
+});
+
 server.listen(PORT, () => {
     console.log(`App is running at http://localhost:${PORT}`);
 });
