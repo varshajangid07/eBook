@@ -51,9 +51,9 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'my_secret_key',
     resave: false,
     saveUninitialized: false,
-    // store: MongoStore.create({ 
-    //     mongoUrl: process.env.MONGODB_URI || process.env.MONGODB_URL 
-    // }),
+    store: MongoStore.create({ 
+        mongoUrl: process.env.MONGODB_URI
+    }),
     cookie: { 
         secure: false
     }
@@ -149,7 +149,11 @@ app.get('/logout', (req, res, next) => {
 
 app.get('/', async (req, res) => {
     try {
-        const response = await fetch('https://gutendex.com/books');
+        const response = await fetch('https://gutendex.com/books', {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+        });
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
         }
