@@ -7,7 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo').default;
 
 const User = require('./models/userModel');
 
