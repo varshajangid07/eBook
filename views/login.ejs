@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log In | eBook Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
 
@@ -11,7 +16,9 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
@@ -24,6 +31,11 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: -0.5px; 
         }
 
         @keyframes slideUpFade {
@@ -78,12 +90,12 @@
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .auth-banner svg {
+        .auth-banner .logo-icon {
             width: 80px;
             height: 80px;
             margin-bottom: 20px;
             animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
         }
 
         .auth-banner h2 {
@@ -238,7 +250,7 @@
                 padding: 30px 20px;
             }
 
-            .auth-banner svg {
+            .auth-banner .logo-icon {
                 width: 50px;
                 height: 50px;
             }
@@ -250,11 +262,7 @@
 
     <div class="auth-container">
         <div class="auth-banner">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-            </svg>
+            <img src="/logo/eBookShala_Logo.svg" alt="eBookShala Logo" class="logo-icon">
             <h2>Welcome Back</h2>
             <p>Dive back into your favorite stories and connect with the community.</p>
         </div>
