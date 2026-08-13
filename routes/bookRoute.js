@@ -1,24 +1,22 @@
-const express=require('express');
-const router=express.Router();
+const express = require('express');
+const router = express.Router();
 
-router.get('/:id', async (req, res)=>{
-    const bookId=req.params.id;
-    try{
-        const currentBookResponse=await fetch(`https://gutendex.com/books/${bookId}`);
-        const bookData=await currentBookResponse.json();
+const Book = require('../models/bookModel');
+const User = require('../models/userModel');
 
-        const moreBooksResponse=await fetch('https://gutendex.com/books');
-        const moreBooksData=await moreBooksResponse.json();
+const bookController = require('../controllers/bookController');
 
-        const similarBooks=moreBooksData.results.filter(b=>b.id.toString()!==bookId.toString()).slice(0, 5);
+router.get('/:id', bookController.getBookDetails);
 
-        res.render('bookDetails', { 
-            book : bookData,
-            similarBooks : similarBooks
-        });
-    } catch(error){
-        res.send('Error loading book detail.');
-    }
-});
+router.post('/:bookId/like', bookController.likeBook);
+router.post('/:bookId/bookmark', bookController.bookmarkBook);
 
-module.exports=router;
+router.post('/:bookId/comment', bookController.addComment);
+router.post('/:bookId/comment/:commentId/like', bookController.likeComment);
+router.delete('/:bookId/comment/:commentId', bookController.deleteComment);
+router.put('/:bookId/comment/:commentId', bookController.editComment);
+router.post('/:bookId/comment/:commentId/reply', bookController.replyToComment);
+
+
+
+module.exports = router;
