@@ -149,15 +149,8 @@ app.get('/logout', (req, res, next) => {
 
 app.get('/', async (req, res) => {
     try {
-        const response = await fetch('https://gutendex.com/books', {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Referer': 'https://gutendex.com/',
-                'Connection': 'keep-alive'
-            }
-        });
+        const targetUrl = encodeURIComponent('https://gutendex.com/books');
+        const response = await fetch(`https://api.allorigins.win/raw?url=${targetUrl}`);
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
         }
