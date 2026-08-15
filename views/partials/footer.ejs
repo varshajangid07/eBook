@@ -1,11 +1,204 @@
 <style>
     .footer {
-        background-color: #000000;
-        height: 300px;
+        background-color: #0a0a0a; 
+        color: #e0e0e0;
+        padding: 60px 50px 20px; 
         width: 100%;
+        box-sizing: border-box;
         margin-top: 40px;
+        font-family: 'Inter', -apple-system, sans-serif; 
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .footer-brand {
+        flex: 1;
+        min-width: 250px;
+    }
+
+    .footer-logo-container {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+        margin-bottom: 5px;
+    }
+
+    .footer-logo-icon {
+        width: 32px;
+        height: auto;
+        filter: brightness(0) invert(1);
+    }
+
+    .footer-logo-text {
+        font-size: 26px;
+        font-weight: bold;
+        color: #ffffff;
+        font-family: 'Playfair Display', serif;
+        letter-spacing: -0.5px;
+    }
+
+    .footer-brand p {
+        font-size: 15px;
+        line-height: 1.6;
+        color: #a0a0a0;
+        margin-top: 15px;
+        max-width: 300px;
+    }
+
+    .footer-links {
+        flex: 1;
+        min-width: 150px;
+    }
+
+    .footer-links h3, 
+    .footer-social h3 {
+        color: #ffffff;
+        font-size: 20px;
+        margin-bottom: 20px;
+        margin-top: 0;
+        font-family: 'Playfair Display', serif;
+        letter-spacing: -0.5px;
+    }
+
+    .footer-links ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+
+    .footer-links a {
+        color: #a0a0a0;
+        text-decoration: none;
+        font-size: 15px;
+        transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        color: #d32f2f;
+    }
+
+    .footer-social {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start; 
+        gap: 15px;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 20px;
+    }
+
+    .social-icons a {
+        color: #ffffff; 
+        background-color: #2a2a2a; 
+        width: 45px; 
+        height: 45px; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%; 
+        transition: all 0.3s ease;
+    }
+
+    .social-icons a:hover {
+        background-color: #d32f2f;
+        transform: translateY(-3px);
+    }
+
+    .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 50px;
+        padding-top: 20px;
+        text-align: center;
+    }
+
+    .footer-bottom p {
+        color: #888;
+        font-size: 14px;
+        margin: 0;
+    }
+    
+    @media (max-width: 768px) {
+        .footer {
+            padding: 50px 30px 20px;
+        }
+
+        .footer-content {
+            flex-direction: column; 
+            align-items: center;
+            text-align: center;
+            gap: 40px;
+        }
+
+        .footer-brand p {
+            margin: 15px auto 0 auto;
+        }
+
+        .social-icons {
+            justify-content: center;
+        }
     }
 </style>
 
 <footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <a href="/" class="footer-logo-container">
+                <img src="/logo/eBookShala_Logo.svg" alt="eBookShala Logo" class="footer-logo-icon">
+                <span class="footer-logo-text">eBookShala</span>
+            </a>
+            <p>Your ultimate digital library. Dive into thousands of captivating stories and resources, anytime, anywhere.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/catalog">Browse Catalog</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-social">
+            <h3>Connect With Us</h3>
+            <div class="social-icons">
+                <a href="https://github.com/varshajangid07" target="_blank" aria-label="GitHub">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                </a>
+        
+                <a href="https://www.linkedin.com/in/varsha-jangid-675120304" target="_blank" aria-label="LinkedIn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect x="2" y="9" width="4" height="12"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 eBookShala. All rights reserved.</p>
+    </div>
 </footer>

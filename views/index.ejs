@@ -1,93 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eBookShala</title>
+    <title>eBookShala | Your Digital Library</title>
+    <link rel="icon" type="image/svg+xml" href="/logo/eBookShala_Logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #F8F5E9;
+            color: #333;
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, .logo, .section-title, #typing-headline {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: -0.5px; 
         }
 
         .hero-section {
             width: 100%;
+            height: 100vh;
             position: relative;
+            overflow: hidden;
         }
 
-        .hero-section img {
+        .hero-video {
             width: 100%;
             height: 100%;
-            display: block;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            text-align: center;
+            width: 90%;
+            max-width: 900px; 
+        }
+
+        #typing-headline {
+            font-size: clamp(40px, 8vw, 72px); 
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 15px 0;
+            min-height: clamp(45px, 8vw, 80px); 
+            text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        #typing-paragraph {
+            font-size: clamp(16px, 2.5vw, 24px);
+            color: #f8f8f8;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 700px;
+            min-height: 80px; 
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .cursor::after {
+            content: '|';
+            animation: blink 0.8s infinite;
+            color: #ffffff;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .cta-container {
+            margin-top: 35px;
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .cta-container.show {
+            opacity: 1;
+            transform: translateY(0); 
+        }
+
+        .btn {
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #d32f2f;
+            color: white;
+            border: 2px solid #d32f2f;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.4);
+        }
+
+        .btn-primary:hover {
+            background-color: #b71c1c;
+            border-color: #b71c1c;
+            transform: translateY(-3px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: #333;
+            transform: translateY(-3px);
+        }
+
+        .features-section {
+            background-color: white;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: relative;
+            z-index: 4;
+        }
+
+        .feature-box {
+            text-align: center;
+            max-width: 250px;
+        }
+
+        .feature-box h3 {
+            font-size: 18px;
+            color: #d32f2f;
+            margin-bottom: 10px;
+        }
+
+        .feature-box p {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            line-height: 1.5;
         }
 
         .trending-section {
-            padding: 40px 50px;
+            padding: 60px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section-title {
-            font-size: 20px;
+            font-size: 28px;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #d32f2f;
+            margin-top: 10px;
+            border-radius: 2px;
         }
 
         .trending-container {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             overflow-x: auto;
-            padding-bottom: 10px;
+            padding-bottom: 20px;
+            scrollbar-width: thin;
+            scrollbar-color: #d32f2f #eee;
+        }
+
+        .trending-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .trending-container::-webkit-scrollbar-track {
+            background: #eee; 
+            border-radius: 4px;
+        }
+        .trending-container::-webkit-scrollbar-thumb {
+            background-color: #d32f2f; 
+            border-radius: 4px;
         }
 
         .card {
             background-color: white;
-            padding: 12px;
-            min-width: 160px;
-            max-width: 160px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 15px;
+            min-width: 180px;
+            max-width: 180px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
-            border-radius: 4px;
+            border-radius: 8px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
         }
 
         .card img {
             width: 100%;
-            height: 240px;
+            height: 260px;
             object-fit: cover;
-            margin-bottom: 12px;
-            border: 1px solid #eee;
-            border-radius: 2px;
+            margin-bottom: 15px;
+            border-radius: 4px;
             transition: opacity 0.3s ease;
         }
 
         .card:hover img {
-            opacity: 0.9; 
+            opacity: 0.9;
         }
 
         .card-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
-            margin: 0 0 4px 0;
+            margin: 0 0 6px 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: #d32f2f;
+            color: #333;
         }
 
         .card-author {
-            font-size: 12px;
-            color: #555;
+            font-size: 13px;
+            color: #777;
             margin: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        @media (max-width: 900px) {
+            .features-section {
+                gap: 20px;
+                padding: 30px 15px;
+            }
+            .trending-section {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-content {
+                width: 95%;
+            }
+            
+            .cta-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 80%;
+                text-align: center;
+            }
+
+            .features-section {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+
+            .trending-section {
+                padding: 40px 15px;
+            }
+
+            .card {
+                min-width: 140px;
+                max-width: 140px;
+                padding: 10px;
+            }
+
+            .card img {
+                height: 200px;
+            }
         }
     </style>
 </head>
@@ -97,11 +321,40 @@
     <%- include('partials/navBar') %>
 
         <div class="hero-section">
-            <img src="/images/HeroImage.svg" alt="Open book on a wooden table at sunset">
+            <video autoplay loop muted playsinline class="hero-video">
+                <source src="/videos/heroSectionVideo.mp4" type="video/mp4">
+            </video>
+            
+            <div class="video-overlay"></div>
+
+            <div class="hero-content">
+                <h1 id="typing-headline"></h1>
+                <p id="typing-paragraph"></p>
+                
+                <div class="cta-container" id="cta-buttons">
+                    <a href="/catalog" class="btn btn-primary">Browse Catalog</a>
+                    <a href="/signup" class="btn btn-secondary">Join for Free</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <div class="feature-box">
+                <h3> Massive Library</h3>
+                <p>Access thousands of bestsellers, academic texts, and hidden indie gems.</p>
+            </div>
+            <div class="feature-box">
+                <h3> Read Anywhere</h3>
+                <p>Seamlessly sync your reading progress across your phone, tablet, and PC.</p>
+            </div>
+            <div class="feature-box">
+                <h3> Offline Access</h3>
+                <p>Download your favorite titles and read them anytime without the internet.</p>
+            </div>
         </div>
 
         <div class="trending-section">
-            <h2 class="section-title">Trending</h2>
+            <h2 class="section-title">Trending Now</h2>
 
             <div class="trending-container">
                 <% trendingBooks.forEach(function(book) { %>
@@ -115,7 +368,7 @@
                             </p>
 
                             <p class="card-author">
-                                <%= book.authors.length> 0 ? book.authors[0].name : "Unknown Author" %>
+                                <%= book.authors.length > 0 ? book.authors[0].name : "Unknown Author" %>
                             </p>
                         </div>
                     </a>
@@ -127,4 +380,35 @@
 
 </body>
 
+<script>
+        const headlineText = "Welcome to eBookShalla";
+        const paragraphText = "Your ultimate digital library. Dive into thousands of captivating stories, insightful non-fiction, and academic resources. Read anytime, anywhere.";
+
+        const headlineElement = document.getElementById('typing-headline');
+        const paragraphElement = document.getElementById('typing-paragraph');
+        const ctaButtons = document.getElementById('cta-buttons');
+
+        let headlineIndex = 0;
+        let paragraphIndex = 0;
+
+        function typeWriter() {
+            if (headlineIndex < headlineText.length) {
+                headlineElement.innerHTML = headlineText.substring(0, headlineIndex + 1) + '<span class="cursor"></span>';
+                headlineIndex++;
+                setTimeout(typeWriter, 80); 
+            } else if (paragraphIndex < paragraphText.length) {
+                headlineElement.innerHTML = headlineText; 
+                paragraphElement.innerHTML = paragraphText.substring(0, paragraphIndex + 1) + '<span class="cursor"></span>';
+                paragraphIndex++;
+                setTimeout(typeWriter, 30);
+            } else {
+                paragraphElement.innerHTML = paragraphText; 
+                ctaButtons.classList.add('show');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(typeWriter, 500); 
+        });
+</script>
 </html>

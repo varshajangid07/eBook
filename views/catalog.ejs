@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog | eBookShala</title>
+    <link rel="icon" type="image/svg+xml" href="/logo/eBookShala_Logo.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #F8F5E9;
+            color: #333;
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: -0.5px; 
+        }
+
+        .coming-soon-container {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 60px; 
+        }
+
+        .icon {
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .icon img {
+            width: 80px; 
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+
+        p {
+            font-size: 18px;
+            color: #666;
+            max-width: 500px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .btn-home {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #d32f2f;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+        }
+
+        .btn-home:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
+        }
+        
+        .navbar .logo, .navbar .nav-links a, .navbar .search-icon, .navbar .bell-icon, .navbar .hamburger {
+            color: #222 !important;
+            text-shadow: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <%- include('partials/navBar') %>
+
+    <div class="coming-soon-container">
+        <div class="icon">
+            <img src="/logo/eBookShala_Logo.svg" alt="eBookShala Logo">
+        </div>
+        <h1>Catalog Coming Soon</h1>
+        <p>We are currently organizing the shelves in our massive digital library! The full searching and browsing experience will be available very shortly.</p>
+        <a href="/" class="btn-home">Return to Home</a>
+    </div>
+
+    <%- include('partials/footer') %>
+
+</body>
+</html>

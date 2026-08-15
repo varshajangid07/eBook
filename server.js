@@ -1,4 +1,6 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+if (process.env.NODE_ENV !== 'production') {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -6,6 +8,8 @@ const path = require('path');
 const session = require('express-session');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
+
+const MongoStore = require('connect-mongo').default;
 
 const User = require('./models/userModel');
 
@@ -15,11 +19,29 @@ require('./config/passport');
 const app = express();
 const PORT = process.env.PORT || 2000;
 
+const http = require('http');
+const { Server } = require('socket.io');
+const server = http.createServer(app);
+const io = new Server(server);
+
+app.set('io', io);
+
+io.on('connection', (socket) => {
+    socket.on('join-book', (bookId) => {
+        socket.join(bookId); 
+    });
+
+    socket.on('join-user', (userId) => {
+        socket.join(userId);
+    });
+});
+
 mongoose.connect(process.env.MONGODB_URI || process.env.MONGODB_URL)
     .then(() => console.log("Connected to MongoDB."))
     .catch(err => console.log("MongoDB connection error : ", err));
 
 const bookRoute = require('./routes/bookRoute');
+const userRoute = require('./routes/userRoute');
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -31,15 +53,45 @@ app.use(session({
     secret: process.env.SESSION_SECRET || 'my_secret_key',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    store: MongoStore.create({ 
+        mongoUrl: process.env.MONGODB_URI
+    }),
+    cookie: { 
+        secure: false
+    }
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-    res.locals.currentUser = req.user || null;
+app.use(async (req, res, next) => {
+    if (req.user) {
+        try {
+            const freshUser = await User.findById(req.user._id);
+            res.locals.currentUser = freshUser;
+        } catch (err) {
+            console.error("Error fetching user for locals:", err);
+            res.locals.currentUser = req.user;
+        }
+    } else {
+        res.locals.currentUser = null;
+    }
     next();
+});
+
+app.post('/notifications/read', async (req, res) => {
+    if (!req.user) return res.status(401).json({ error: 'Unauthorized' });
+
+    try {
+        await User.updateOne(
+            { _id: req.user._id },
+            { $set: { "notifications.$[].isRead": true } }
+        );
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 app.get('/signUp', (req, res) => {
@@ -55,7 +107,7 @@ app.post('/signUp', async (req, res) => {
     try {
         let user = await User.findOne({ email: email });
         if (user) {
-            return res.send('Email already exists.');
+            return res.render('signup', { error: 'Email already exists. Please log in.' });
         }
         
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -97,29 +149,41 @@ app.get('/logout', (req, res, next) => {
     });
 });
 
-app.get('/profile', (req, res) => {
-    if (!req.user) {
-        return res.redirect('/login');
-    }
-    res.render('profile');
-});
-
-
-
 app.get('/', async (req, res) => {
     try {
-        const response = await fetch('https://gutendex.com/books');
+        const response = await fetch('https://openlibrary.org/subjects/fiction.json?limit=5');
+        if (!response.ok) {
+            throw new Error(`API responded with status: ${response.status}`);
+        }
         const data = await response.json();
-        const topFiveBooks = data.results.slice(0, 5);
+        const topFiveBooks = (data.works || []).map(book => {
+            return {
+                id: book.key ? book.key.replace('/works/', '') : "unknown",
+                title: book.title || "Unknown Title",
+                authors: book.authors && book.authors.length > 0 
+                    ? [{ name: book.authors[0].name }] 
+                    : [{ name: "Unknown Author" }],
+                formats: { 
+                    "image/jpeg": book.cover_id 
+                        ? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg` 
+                        : "https://via.placeholder.com/150x240?text=No+Cover" 
+                }
+            };
+        });
         res.render('index', { trendingBooks: topFiveBooks });
     } catch (error) {
-        console.error('Error Fetching books : ', error);
-        res.send('Error loading the eBook library.');
+        console.error('Open Library API failed: ', error.message);
+        res.render('index', { trendingBooks: [] });
     }
 });
 
 app.use('/book', bookRoute);
+app.use('/', userRoute);
 
-app.listen(PORT, () => {
+app.get('/catalog', (req, res) => {
+    res.render('catalog', { currentUser: req.user }); 
+});
+
+server.listen(PORT, () => {
     console.log(`App is running at http://localhost:${PORT}`);
 });
