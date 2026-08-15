@@ -343,7 +343,7 @@
             </button>
 
             <button title="Bookmark this book" id="bookmarkBtn" data-id="<%= book.id %>"
-                data-title="<%= book.title.split('"').join('&quot;') %>" 
+                data-title="<%= (book.title || 'Unknown Title').split('\'').join('&quot;') %>" 
                 data-author="<%= book.authors.length > 0 ? book.authors[0].name.split('"').join('&quot;') : 'Unknown Author' %>"
                 onclick="toggleBookmark(this)">
                 <svg id="bookmarkIcon" xmlns="http://www.w3.org/2000/svg" 
@@ -391,13 +391,11 @@
         const readLink = book.formats['text/html'] || book.formats['application/epub+zip'] || '#';
     %>
 
-    <a href="<%= readLink %>" class="read-btn" target="_blank">Read Book</a>
+    <a href="<%= book.readLink %>" target="_blank" class="read-btn">Read Book</a>
 
     <div class="details-card">
         <h3 style="margin-top: 0; font-size: 20px; color: #222;">Synopsis</h3>
-        <p class="synopsis-text">
-            Dive into the classic world of <em><%= book.title %></em>. This text is provided for free by the Project Gutenberg library. Enjoy exploring timeless themes and historical context preserved within this digitized edition.
-        </p>
+        <p class="synopsis-text" style="white-space: pre-line;"><%= book.description %></p>
 
         <div class="meta-grid">
             <div class="meta-row">

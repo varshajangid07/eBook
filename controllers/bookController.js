@@ -5,13 +5,45 @@ const User = require('../models/userModel');
 exports.getBookDetails = async (req, res) => {
     const bookId = req.params.id;
     try {
-        const currentBookResponse = await fetch(`https://gutendex.com/books/${bookId}`);
-        const bookData = await currentBookResponse.json();
+        const currentBookResponse = await fetch(`https://openlibrary.org/works/${bookId}.json`);
+        
+        if (!currentBookResponse.ok) {
+            throw new Error('Failed to fetch book from Open Library');
+        }
+        
+        const rawBookData = await currentBookResponse.json();
+        const bookData = {
+            id: bookId,
+            title: rawBookData.title || 'Unknown Title',
+            authors: [{ name: rawBookData.authors && rawBookData.authors[0].author?.name ? rawBookData.authors[0].author.name : "Author details unavailable" }],
+            formats: {
+                "image/jpeg": rawBookData.covers && rawBookData.covers.length > 0 
+                    ? `https://covers.openlibrary.org/b/id/${rawBookData.covers[0]}-L.jpg` 
+                    : "https://via.placeholder.com/300x450?text=No+Cover"
+            },
+            subjects: rawBookData.subjects || ["Fiction"],
+            description: typeof rawBookData.description === 'object' 
+                ? rawBookData.description.value 
+                : (rawBookData.description || 'No description available for this book.'),
+            readLink: `https://openlibrary.org/works/${bookId}`
+        };
 
-        const moreBooksResponse = await fetch('https://gutendex.com/books');
+        const moreBooksResponse = await fetch('https://openlibrary.org/subjects/fiction.json?limit=6');
         const moreBooksData = await moreBooksResponse.json();
-
-        const similarBooks = moreBooksData.results.filter(b => b.id.toString() !== bookId.toString()).slice(0, 5);
+        
+        const similarBooks = (moreBooksData.works || [])
+            .filter(b => b.key.replace('/works/', '') !== bookId)
+            .slice(0, 5)
+            .map(b => ({
+                id: b.key.replace('/works/', ''),
+                title: b.title,
+                authors: [{ name: b.authors ? b.authors[0].name : "Unknown Author" }],
+                formats: {
+                    "image/jpeg": b.cover_id 
+                        ? `https://covers.openlibrary.org/b/id/${b.cover_id}-M.jpg` 
+                        : "https://via.placeholder.com/150x240?text=No+Cover"
+                }
+            }));
 
         let localBook = await Book.findOne({ bookId: bookId }).populate({
             path: 'comments.user',
@@ -46,7 +78,8 @@ exports.getBookDetails = async (req, res) => {
             userBookmarkedBook: userBookmarkedBook
         });
     } catch (error) {
-        res.send('Error loading book detail.');
+        console.error("Error in getBookDetails:", error);
+        res.status(500).send('Error loading book detail.');
     }
 };
 

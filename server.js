@@ -1,4 +1,6 @@
-// process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+if (process.env.NODE_ENV !== 'production') {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -149,16 +151,28 @@ app.get('/logout', (req, res, next) => {
 
 app.get('/', async (req, res) => {
     try {
-        const targetUrl = encodeURIComponent('https://gutendex.com/books');
-        const response = await fetch(`https://api.allorigins.win/raw?url=${targetUrl}`);
+        const response = await fetch('https://openlibrary.org/subjects/fiction.json?limit=5');
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
         }
         const data = await response.json();
-        const topFiveBooks = data.results.slice(0, 5);
+        const topFiveBooks = (data.works || []).map(book => {
+            return {
+                id: book.key ? book.key.replace('/works/', '') : "unknown",
+                title: book.title || "Unknown Title",
+                authors: book.authors && book.authors.length > 0 
+                    ? [{ name: book.authors[0].name }] 
+                    : [{ name: "Unknown Author" }],
+                formats: { 
+                    "image/jpeg": book.cover_id 
+                        ? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg` 
+                        : "https://via.placeholder.com/150x240?text=No+Cover" 
+                }
+            };
+        });
         res.render('index', { trendingBooks: topFiveBooks });
     } catch (error) {
-        console.error('Error Fetching books : ', error);
+        console.error('Open Library API failed: ', error.message);
         res.render('index', { trendingBooks: [] });
     }
 });
