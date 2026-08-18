@@ -197,6 +197,7 @@
             border-radius: 2px;
         }
 
+        /* Reverted container to standard scrollable row */
         .trending-container {
             display: flex;
             gap: 25px;
@@ -204,6 +205,32 @@
             padding-bottom: 20px;
             scrollbar-width: thin;
             scrollbar-color: #d32f2f #eee;
+        }
+
+        .trending-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .trending-container::-webkit-scrollbar-track {
+            background: #eee; 
+            border-radius: 4px;
+        }
+        .trending-container::-webkit-scrollbar-thumb {
+            background-color: #d32f2f; 
+            border-radius: 4px;
+        }
+
+        /* --- NEW SCROLL REVEAL CSS --- */
+        .reveal-card {
+            opacity: 0; /* Hidden by default */
+            transform: translateX(100px); /* Pushed 100px to the right by default */
+            /* The transition controls the speed and smoothness of the slide-in */
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* When JavaScript adds the 'show' class, the cards slide to their normal spot */
+        .reveal-card.show {
+            opacity: 1;
+            transform: translateX(0); 
         }
 
         .trending-container::-webkit-scrollbar {
@@ -355,10 +382,11 @@
 
         <div class="trending-section">
             <h2 class="section-title">Trending Now</h2>
-
+            
             <div class="trending-container">
                 <% trendingBooks.forEach(function(book) { %>
-                    <a href="/book/<%= book.id %>" style="text-decoration: none; color: inherit;">
+                    <!-- Added the 'reveal-card' class here -->
+                    <a href="/book/<%= book.id %>" class="reveal-card" style="text-decoration: none; color: inherit;">
                         <div class="card" style="cursor: pointer;">
                             <img src="<%= book.formats['image/jpeg'] ? book.formats['image/jpeg'] : 'https://via.placeholder.com/150x240?text=No+Cover' %>"
                                 alt="<%= book.title %>">
@@ -372,7 +400,9 @@
                             </p>
                         </div>
                     </a>
-                    <% }) %>
+                <% }) %>
+            </div>
+        </div>
             </div>
         </div>
 
@@ -409,6 +439,37 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeWriter, 500); 
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            // Options for the observer
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 // Triggers when 10% of the card is visible on screen
+            };
+
+            // Create the observer
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        // Adds a slight delay based on the book's order (index) 
+                        // so they slide in one after the other (150ms apart)
+                        setTimeout(() => {
+                            entry.target.classList.add('show');
+                        }, index * 150); 
+                        
+                        // Stop observing the card once it has animated so it stays in place
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            // Tell the observer to watch all elements with the 'reveal-card' class
+            const cardsToReveal = document.querySelectorAll('.reveal-card');
+            cardsToReveal.forEach(card => {
+                observer.observe(card);
+            });
         });
 </script>
 </html>
