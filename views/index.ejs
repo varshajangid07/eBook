@@ -218,6 +218,29 @@
             border-radius: 4px;
         }
 
+        .reveal-card {
+            opacity: 0; 
+            transform: translateX(100px); 
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .reveal-card.show {
+            opacity: 1;
+            transform: translateX(0); 
+        }
+
+        .trending-container::-webkit-scrollbar {
+            height: 8px;
+        }
+        .trending-container::-webkit-scrollbar-track {
+            background: #eee; 
+            border-radius: 4px;
+        }
+        .trending-container::-webkit-scrollbar-thumb {
+            background-color: #d32f2f; 
+            border-radius: 4px;
+        }
+
         .card {
             background-color: white;
             padding: 15px;
@@ -267,6 +290,106 @@
             text-overflow: ellipsis;
         }
 
+        .about-platform-section {
+            background-color: white;
+            padding: 80px 60px;
+            max-width: 1100px;
+            margin: 40px auto 80px auto;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+        }
+
+        .about-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+        }
+
+        .center-title {
+            text-align: center;
+        }
+
+        .center-title::after {
+            margin: 15px auto 0 auto; 
+        }
+
+        .about-description {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-top: 25px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .info-card {
+            background-color: #F8F5E9; 
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+            background-color: #fff;
+        }
+
+        .info-icon {
+            font-size: 45px;
+            margin-bottom: 20px;
+        }
+
+        .info-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: #333;
+            margin: 0 0 15px 0;
+        }
+
+        .info-card p {
+            font-size: 15px;
+            color: #666;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .about-logo {
+            width: 70px;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px auto;
+            filter: brightness(0); 
+            transform: perspective(600px) rotateY(0deg);
+            transition: transform 1.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .about-logo.spin-once {
+            transform: perspective(600px) rotateY(360deg);
+        }
+
+        .info-icon {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .info-icon svg {
+            color: #d32f2f;
+            transition: transform 0.3s ease;
+        }
+
+        .info-card:hover .info-icon svg {
+            transform: translateY(-5px);
+        }
+
+
         @media (max-width: 900px) {
             .features-section {
                 gap: 20px;
@@ -274,6 +397,11 @@
             }
             .trending-section {
                 padding: 40px 30px;
+            }
+
+            .about-platform-section {
+                padding: 60px 40px;
+                margin: 20px 20px 60px 20px;
             }
         }
 
@@ -311,6 +439,19 @@
 
             .card img {
                 height: 200px;
+            }
+
+            .about-platform-section {
+                padding: 40px 20px;
+                margin: 20px 15px 40px 15px;
+            }
+
+            .about-description {
+                font-size: 16px;
+            }
+
+            .info-card {
+                padding: 30px 20px;
             }
         }
     </style>
@@ -358,7 +499,7 @@
 
             <div class="trending-container">
                 <% trendingBooks.forEach(function(book) { %>
-                    <a href="/book/<%= book.id %>" style="text-decoration: none; color: inherit;">
+                    <a href="/book/<%= book.id %>" class="reveal-card" style="text-decoration: none; color: inherit;">
                         <div class="card" style="cursor: pointer;">
                             <img src="<%= book.formats['image/jpeg'] ? book.formats['image/jpeg'] : 'https://via.placeholder.com/150x240?text=No+Cover' %>"
                                 alt="<%= book.title %>">
@@ -372,7 +513,50 @@
                             </p>
                         </div>
                     </a>
-                    <% }) %>
+                <% }) %>
+            </div>
+        </div>
+
+        <div class="about-platform-section">
+            <div class="about-header">
+                <img src="/logo/eBookShala_Logo.svg" alt="eBookShala Logo" class="about-logo" id="rotating-logo">
+                
+                <h2 class="section-title center-title">About eBookShala</h2>
+                <p class="about-description">
+                    eBookShala is your premier digital sanctuary for knowledge and imagination. We believe that reading should be accessible to everyone, breaking down the barriers of traditional reading. Whether you are looking for academic resources, timeless classics, or your next fiction adventure, we bring the world's best books directly to your screen.
+                </p>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"></path>
+                        </svg>
+                    </div>
+                    <h3>Vast Collection</h3>
+                    <p>Explore thousands of curated titles. From historical archives to modern thrillers, our library is constantly growing to feed your curiosity.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z"></path>
+                        </svg>
+                    </div>
+                    <h3>Read Anywhere</h3>
+                    <p>Start a book on your laptop and pick up right where you left off on your mobile phone. Your personal library syncs perfectly across all devices.</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"></path>
+                        </svg>
+                    </div>
+                    <h3>Ad-Free Focus</h3>
+                    <p>Enjoy a completely distraction-free reading environment. No pop-ups, no ads—just you and the story you are immersed in.</p>
+                </div>
             </div>
         </div>
 
@@ -409,6 +593,54 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeWriter, 500); 
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1 
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('show');
+                        }, index * 150); 
+                        
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            const cardsToReveal = document.querySelectorAll('.reveal-card, .reveal-left, .reveal-right');
+            cardsToReveal.forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const logo = document.getElementById('rotating-logo');
+            
+            if (logo) {
+                const logoObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            
+                            entry.target.classList.add('spin-once');
+                            
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '0px',
+                    threshold: 0.5 
+                });
+
+                logoObserver.observe(logo);
+            }
         });
 </script>
 </html>

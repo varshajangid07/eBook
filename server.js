@@ -149,8 +149,16 @@ app.get('/logout', (req, res, next) => {
     });
 });
 
+
+let cachedBooks = [];
+let lastFetchTime = 0;
 app.get('/', async (req, res) => {
     try {
+
+        if (cachedBooks.length > 0 && (Date.now() - lastFetchTime < 3600000)) {
+            return res.render('index', { trendingBooks: cachedBooks });
+        }
+
         const response = await fetch('https://openlibrary.org/subjects/fiction.json?limit=5');
         if (!response.ok) {
             throw new Error(`API responded with status: ${response.status}`);
@@ -170,10 +178,13 @@ app.get('/', async (req, res) => {
                 }
             };
         });
+        cachedBooks = topFiveBooks;
+        lastFetchTime = Date.now();
+
         res.render('index', { trendingBooks: topFiveBooks });
     } catch (error) {
         console.error('Open Library API failed: ', error.message);
-        res.render('index', { trendingBooks: [] });
+        res.render('index', { trendingBooks: cachedBooks.length > 0 ? cachedBooks : [] });
     }
 });
 
