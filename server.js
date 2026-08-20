@@ -195,6 +195,6 @@ app.get('/catalog', (req, res) => {
     res.render('catalog', { currentUser: req.user }); 
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`App is running at http://localhost:${PORT}`);
 });
