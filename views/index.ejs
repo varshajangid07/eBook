@@ -389,6 +389,122 @@
             transform: translateY(-5px);
         }
 
+        /* FAQ Section Styles */
+        .faq-section {
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+
+        .faq-container {
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #d32f2f;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 28px;
+            font-weight: 400;
+            color: #d32f2f;
+            transition: transform 0.4s ease;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease;
+            background-color: #faf9f5;
+        }
+
+        .faq-answer p {
+            margin: 0;
+            padding: 0 25px 20px 25px;
+            color: #555;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px; /* Large enough to fit the text */
+        }
+
+        /* Final CTA Banner Styles */
+        .final-cta-section {
+            background: linear-gradient(135deg, #d32f2f 0%, #9a0007 100%);
+            color: white;
+            text-align: center;
+            padding: 70px 20px;
+            margin-top: 40px;
+        }
+
+        .final-cta-section h2 {
+            font-size: 36px;
+            margin: 0 0 15px 0;
+            color: white;
+        }
+
+        .final-cta-section p {
+            font-size: 18px;
+            margin: 0 0 30px 0;
+            opacity: 0.9;
+        }
+
+        .cta-btn-inverted {
+            background-color: white;
+            color: #d32f2f !important;
+            border: 2px solid white !important;
+            padding: 15px 40px;
+            font-size: 18px;
+        }
+
+        .cta-btn-inverted:hover {
+            background-color: transparent;
+            color: white !important;
+        }
+
+        @media (max-width: 600px) {
+            .faq-section {
+                padding: 40px 15px;
+            }
+            .faq-question {
+                font-size: 16px;
+                padding: 15px 20px;
+            }
+            .final-cta-section h2 {
+                font-size: 28px;
+            }
+        }
+
 
         @media (max-width: 900px) {
             .features-section {
@@ -560,6 +676,42 @@
             </div>
         </div>
 
+        <div class="faq-section">
+            <h2 class="section-title center-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">Is eBookShala completely free?</div>
+                    <div class="faq-answer">
+                        <p>We offer a vast collection of free public domain books and independent titles. We also have a premium tier for the latest bestsellers and exclusive academic resources.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I read books offline?</div>
+                    <div class="faq-answer">
+                        <p>Yes! Once you download our mobile or desktop app, you can save any book to your device and read it without an internet connection.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What file formats are supported?</div>
+                    <div class="faq-answer">
+                        <p>Our native web reader supports EPUB and PDF formats. You can also download books in formats compatible with Kindle (MOBI) and other popular e-readers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How does cross-device syncing work?</div>
+                    <div class="faq-answer">
+                        <p>Just log into your eBookShala account on any device. Your bookmarks, highlights, and reading progress are automatically saved to the cloud and synced instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="final-cta-section">
+            <h2>Ready to start your reading journey?</h2>
+            <p>Join thousands of readers and unlock a world of knowledge today.</p>
+            <a href="/signup" class="btn btn-secondary cta-btn-inverted">Create Free Account</a>
+        </div>
+
         <%- include('partials/footer') %>
 
 </body>
@@ -641,6 +793,24 @@
 
                 logoObserver.observe(logo);
             }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
         });
 </script>
 </html>
