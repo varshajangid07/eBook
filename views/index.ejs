@@ -389,7 +389,6 @@
             transform: translateY(-5px);
         }
 
-        /* FAQ Section Styles */
         .faq-section {
             padding: 60px 20px;
             max-width: 800px;
@@ -455,10 +454,9 @@
         }
 
         .faq-item.active .faq-answer {
-            max-height: 300px; /* Large enough to fit the text */
+            max-height: 300px; 
         }
 
-        /* Final CTA Banner Styles */
         .final-cta-section {
             background: linear-gradient(135deg, #d32f2f 0%, #9a0007 100%);
             color: white;
@@ -492,16 +490,124 @@
             color: white !important;
         }
 
-        @media (max-width: 600px) {
-            .faq-section {
-                padding: 40px 15px;
+        .community-stats-section {
+            position: relative;
+            background: linear-gradient(-45deg, #d32f2f, #6b0f1a, #1a1a2e, #0f3443);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 80px 20px;
+            overflow: hidden;
+            margin: 60px 0;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stats-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .community-stats-section .section-title::after {
+            background-color: white; 
+        }
+
+        .stats-subtitle {
+            color: #f0f0f0; 
+            text-align: center; 
+            max-width: 600px; 
+            margin: 0 auto 50px auto; 
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 35px 45px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            min-width: 200px;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .stat-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin: 0 0 10px 0;
+            color: #fff;
+        }
+
+        .stat-item p {
+            font-size: 16px;
+            margin: 0;
+            color: #e0e0e0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .floating-pages {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            z-index: 1;
+        }
+
+        .floating-pages li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: floatUp 25s linear infinite;
+            bottom: -150px;
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .floating-pages li:nth-child(1) { left: 10%; width: 40px; height: 56px; animation-delay: 0s; }
+        .floating-pages li:nth-child(2) { left: 25%; width: 25px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
+        .floating-pages li:nth-child(3) { left: 55%; width: 50px; height: 70px; animation-delay: 4s; }
+        .floating-pages li:nth-child(4) { left: 75%; width: 30px; height: 42px; animation-delay: 0s; animation-duration: 18s; }
+        .floating-pages li:nth-child(5) { left: 90%; width: 60px; height: 84px; animation-delay: 3s; }
+        .floating-pages li:nth-child(6) { left: 35%; width: 20px; height: 28px; animation-delay: 5s; animation-duration: 10s; }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
             }
-            .faq-question {
-                font-size: 16px;
-                padding: 15px 20px;
-            }
-            .final-cta-section h2 {
-                font-size: 28px;
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
             }
         }
 
@@ -518,6 +624,14 @@
             .about-platform-section {
                 padding: 60px 40px;
                 margin: 20px 20px 60px 20px;
+            }
+
+            .stats-grid { 
+                gap: 20px; 
+            }
+            .stat-item { 
+                min-width: 100%; 
+                padding: 25px; 
             }
         }
 
@@ -568,6 +682,17 @@
 
             .info-card {
                 padding: 30px 20px;
+            }
+
+            .faq-section {
+                padding: 40px 15px;
+            }
+            .faq-question {
+                font-size: 16px;
+                padding: 15px 20px;
+            }
+            .final-cta-section h2 {
+                font-size: 28px;
             }
         }
     </style>
@@ -672,6 +797,32 @@
                     </div>
                     <h3>Ad-Free Focus</h3>
                     <p>Enjoy a completely distraction-free reading environment. No pop-ups, no ads—just you and the story you are immersed in.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="community-stats-section">
+            <ul class="floating-pages">
+                <li></li><li></li><li></li><li></li><li></li><li></li>
+            </ul>
+            
+            <div class="stats-content">
+                <h2 class="section-title center-title" style="color: white;">Our Growing Universe</h2>
+                <p class="stats-subtitle">Join thousands of readers who have made eBookShala their daily reading companion.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="50000">0</h3>
+                        <p>Active Readers</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="12500">0</h3>
+                        <p>Digital Books</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="45">0</h3>
+                        <p>Categories</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -810,6 +961,38 @@
                         item.classList.add('active');
                     }
                 });
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.counter');
+            
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = +entry.target.getAttribute('data-target');
+                        let count = 0;
+                        
+                        const updateCount = () => {
+                            const increment = target / 40; 
+                            
+                            if (count < target) {
+                                count += increment;
+                                entry.target.innerText = Math.ceil(count).toLocaleString() + '+';
+                                setTimeout(updateCount, 30);
+                            } else {
+                                entry.target.innerText = target.toLocaleString() + '+';
+                            }
+                        };
+                        
+                        updateCount();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(counter => {
+                counterObserver.observe(counter);
             });
         });
 </script>
