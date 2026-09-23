@@ -492,34 +492,43 @@
 
         .community-stats-section {
             position: relative;
-            background: linear-gradient(-45deg, #d32f2f, #6b0f1a, #1a1a2e, #0f3443);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            padding: 80px 20px;
+            background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+            padding: 90px 40px;
+            max-width: 1120px;
+            margin: 60px auto;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
             overflow: hidden;
-            margin: 60px 0;
-            color: white;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        .stats-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(26, 5, 5, 0.75) 100%);
+            z-index: 1;
         }
 
         .stats-content {
             position: relative;
             z-index: 2;
-            max-width: 1000px;
-            margin: 0 auto;
         }
 
-        .community-stats-section .section-title::after {
-            background-color: white; 
+        .text-light {
+            color: #ffffff !important;
+        }
+
+        .text-light::after {
+            background-color: #d32f2f !important;
         }
 
         .stats-subtitle {
-            color: #f0f0f0; 
+            color: #e0e0e0; 
             text-align: center; 
             max-width: 600px; 
             margin: 0 auto 50px auto; 
@@ -528,86 +537,196 @@
         }
 
         .stats-grid {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
         }
 
         .stat-item {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 35px 45px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px 30px;
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            min-width: 200px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.3s ease, background 0.3s ease;
         }
 
         .stat-item:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .stat-item h3 {
             font-family: 'Playfair Display', serif;
-            font-size: 48px;
+            font-size: 52px;
             margin: 0 0 10px 0;
-            color: #fff;
+            color: #ffffff;
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.3);
         }
 
         .stat-item p {
-            font-size: 16px;
+            font-size: 15px;
             margin: 0;
-            color: #e0e0e0;
+            color: #ffb3b3; 
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+        }
+
+        /* Split Text & Image Section */
+        .split-section {
+            background-color: white;
+            padding: 80px 60px;
+            max-width: 1100px;
+            margin: 60px auto 80px auto; 
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .split-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .split-text {
+            flex: 1;
+        }
+
+        .split-text .section-title {
+            margin-bottom: 20px;
+        }
+
+        .split-text p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 15px;
             font-weight: 500;
         }
 
-        .floating-pages {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .feature-list li svg {
+            color: #d32f2f;
+            flex-shrink: 0;
+        }
+
+        .split-image-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .split-image {
             width: 100%;
-            height: 100%;
-            overflow: hidden;
-            margin: 0;
-            padding: 0;
-            z-index: 1;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            object-fit: cover;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
-        .floating-pages li {
-            position: absolute;
-            display: block;
-            list-style: none;
-            width: 20px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.1);
-            animation: floatUp 25s linear infinite;
-            bottom: -150px;
-            border-radius: 2px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+        .split-image:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
-        .floating-pages li:nth-child(1) { left: 10%; width: 40px; height: 56px; animation-delay: 0s; }
-        .floating-pages li:nth-child(2) { left: 25%; width: 25px; height: 35px; animation-delay: 2s; animation-duration: 12s; }
-        .floating-pages li:nth-child(3) { left: 55%; width: 50px; height: 70px; animation-delay: 4s; }
-        .floating-pages li:nth-child(4) { left: 75%; width: 30px; height: 42px; animation-delay: 0s; animation-duration: 18s; }
-        .floating-pages li:nth-child(5) { left: 90%; width: 60px; height: 84px; animation-delay: 3s; }
-        .floating-pages li:nth-child(6) { left: 35%; width: 20px; height: 28px; animation-delay: 5s; animation-duration: 10s; }
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
 
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .reveal-left.show, .reveal-right.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 900px) {
+            .split-section {
+                padding: 50px 40px;
+                margin: 40px 20px;
             }
-            100% {
-                transform: translateY(-1000px) rotate(720deg);
-                opacity: 0;
+            .split-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .split-text {
+                text-align: center;
+            }
+            .split-text .section-title::after {
+                margin: 10px auto 0 auto; 
+            }
+            .feature-list li {
+                justify-content: center;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .split-section {
+                padding: 40px 20px;
+                margin: 40px 15px;
+            }
+            .split-image {
+                border-radius: 12px;
+            }
+            .feature-list li {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .community-stats-section { 
+                padding: 60px 30px; 
+                margin: 40px 20px; 
+                background-attachment: scroll; 
+            }
+        }
+
+        @media (max-width: 600px) {
+            .community-stats-section { 
+                padding: 50px 20px; 
+                margin: 30px 15px; 
+            }
+            .stat-item { 
+                padding: 30px 20px; 
+            }
+            .stat-item h3 {
+                font-size: 42px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .community-stats-section { 
+                padding: 40px 20px; 
+                margin: 20px 15px 40px 15px; 
+            }
+            .stat-item { 
+                padding: 30px 20px; 
             }
         }
 
@@ -802,12 +921,9 @@
         </div>
 
         <div class="community-stats-section">
-            <ul class="floating-pages">
-                <li></li><li></li><li></li><li></li><li></li><li></li>
-            </ul>
-            
+            <div class="stats-overlay"></div>
             <div class="stats-content">
-                <h2 class="section-title center-title" style="color: white;">Our Growing Universe</h2>
+                <h2 class="section-title center-title text-light">Our Growing Universe</h2>
                 <p class="stats-subtitle">Join thousands of readers who have made eBookShala their daily reading companion.</p>
                 
                 <div class="stats-grid">
@@ -861,6 +977,41 @@
             <h2>Ready to start your reading journey?</h2>
             <p>Join thousands of readers and unlock a world of knowledge today.</p>
             <a href="/signup" class="btn btn-secondary cta-btn-inverted">Create Free Account</a>
+        </div>
+
+        <div class="split-section">
+            <div class="split-content reveal-left">
+                <div class="split-text">
+                    <h2 class="section-title">Immerse Yourself in Every Page</h2>
+                    <p>
+                        Discover a reading experience designed for pure focus and comfort. Whether you are revisiting a timeless classic or diving into a modern thriller, our platform adapts to your environment.
+                    </p>
+                    <ul class="feature-list">
+                        <li>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Curated collections spanning 45+ genres
+                        </li>
+                        <li>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Customizable fonts and reading themes
+                        </li>
+                        <li>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Seamless sync across all your devices
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="split-image-container reveal-right">
+                    <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Stack of aesthetic books" class="split-image">
+                </div>
+            </div>
         </div>
 
         <%- include('partials/footer') %>
