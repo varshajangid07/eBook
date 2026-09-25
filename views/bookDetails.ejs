@@ -150,6 +150,137 @@
             color: #555;
         }
 
+        .login-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .login-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .login-modal-card {
+            position: relative;
+            background: #ffffff;
+            width: 100%;
+            max-width: 380px;
+            padding: 35px 30px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .login-modal-overlay.show .login-modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 26px;
+            color: #888;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            color: #222;
+        }
+
+        .modal-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .modal-logo {
+            width: 46px;
+            height: auto;
+            filter: brightness(0);
+        }
+
+        .modal-brand-name {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: #222;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-title {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            color: #111;
+        }
+
+        .modal-subtitle {
+            margin: 0 0 25px 0;
+            font-size: 14.5px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .modal-cta-btn {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #783535;
+            color: #ffffff;
+            padding: 14px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 6px 18px rgba(120, 53, 53, 0.3);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .modal-cta-btn:hover {
+            background-color: #5e2828;
+            transform: translateY(-2px);
+        }
+
+        .modal-footer-text {
+            margin: 18px 0 0 0;
+            font-size: 13px;
+            color: #777;
+        }
+
+        .modal-footer-text a {
+            color: #783535;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .modal-footer-text a:hover {
+            text-decoration: underline;
+        }
+
         @media (min-width: 600px) {
             .meta-grid {
                 grid-template-columns: 1fr 1fr;
@@ -392,7 +523,11 @@
         const readLink = book.formats['text/html'] || book.formats['application/epub+zip'] || '#';
     %>
 
-    <a href="<%= book.readLink %>" target="_blank" class="read-btn">Read Book</a>
+    <% if (typeof currentUser !== 'undefined' && currentUser) { %>
+        <a href="<%= book.readLink %>" target="_blank" class="read-btn">Read Book</a>
+    <% } else { %>
+        <button type="button" onclick="openLoginModal()" class="read-btn" style="border: none; cursor: pointer;"> Read Book </button>
+    <% } %>
 
     <div class="details-card">
         <h3 style="margin-top: 0; font-size: 20px; color: #222;">Synopsis</h3>
@@ -595,8 +730,77 @@
     </div>
 </div> 
 
+<div class="login-modal-overlay" id="loginModalOverlay" onclick="closeLoginModal(event)">
+    <div class="login-modal-card" onclick="event.stopPropagation()">
+        <button class="modal-close-btn" onclick="closeLoginModal()" aria-label="Close modal">&times;</button>
+        
+        <div class="modal-brand">
+            <img src="/logo/eBookShala_Logo.svg" alt="eBookShala Logo" class="modal-logo">
+            <span class="modal-brand-name">eBookShala</span>
+        </div>
+
+        <h3 class="modal-title" id="modalTitle">Start Reading This Book</h3>
+        <p class="modal-subtitle" id="modalSubtitle">
+            Please log in to your eBookShala account to unlock full access to <strong><%= book.title %></strong>.
+        </p>
+
+        <a href="/login?returnTo=/book/<%= book.id %>" class="modal-cta-btn" id="modalCtaBtn">
+            Log In to Read
+        </a>
+
+        <p class="modal-footer-text">
+            New to eBookShala? <a href="/signUp">Create a free account</a>
+        </p>
+    </div>
+</div>
+
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    const isUserLoggedIn = "<%= (typeof currentUser !== 'undefined' && currentUser) ? 'true' : 'false' %>" === "true";
+    const bookTitle = document.getElementById('likeBtn') 
+        ? document.getElementById('likeBtn').getAttribute('data-title') 
+        : "this book";
+
+    function openLoginModal(action = 'read') {
+        const modal = document.getElementById('loginModalOverlay');
+        const titleEl = document.getElementById('modalTitle');
+        const subtitleEl = document.getElementById('modalSubtitle');
+        const ctaBtnEl = document.getElementById('modalCtaBtn');
+
+        if (titleEl && subtitleEl && ctaBtnEl) {
+            if (action === 'like') {
+                titleEl.innerText = 'Save to Your Favorites';
+                subtitleEl.innerHTML = `Please log in to your eBookShala account to like and save <strong>${bookTitle}</strong> to your favorites.`;
+                ctaBtnEl.innerText = 'Log In to Like';
+            } else if (action === 'bookmark') {
+                titleEl.innerText = 'Bookmark This Book';
+                subtitleEl.innerHTML = `Please log in to your eBookShala account to bookmark <strong>${bookTitle}</strong> for later reading.`;
+                ctaBtnEl.innerText = 'Log In to Bookmark';
+            } else {
+                titleEl.innerText = 'Start Reading This Book';
+                subtitleEl.innerHTML = `Please log in to your eBookShala account to unlock full access to <strong>${bookTitle}</strong>.`;
+                ctaBtnEl.innerText = 'Log In to Read';
+            }
+        }
+
+        if (modal) {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeLoginModal(event) {
+        const modal = document.getElementById('loginModalOverlay');
+        if (modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+    }
+
+    window.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLoginModal();
+    });
+
     function toggleDropdown(dropdownId) {
         document.querySelectorAll('.kebab-dropdown').forEach(d => {
             if (d.id !== dropdownId) d.style.display = 'none';
@@ -613,7 +817,7 @@
 
     document.getElementById('share-btn').addEventListener('click', async () => {
         const shareData = {
-            title: '<%= book.title %>',
+            title: bookTitle,
             text: 'Check out this great book!',
             url: window.location.href
         };
@@ -630,6 +834,8 @@
     });
 
     async function toggleLike(btn) {
+        if (!isUserLoggedIn) return openLoginModal('like');
+
         const bookId = btn.getAttribute('data-id');
         const title = btn.getAttribute('data-title');
         const author = btn.getAttribute('data-author');
@@ -641,7 +847,7 @@
                 body: JSON.stringify({ title, author })
             });
 
-            if (res.status === 401) return alert("Please log in to like this book.");
+            if (res.status === 401) return openLoginModal('like');
 
             const data = await res.json();
             if (data.success) {
@@ -658,6 +864,8 @@
     }
 
     async function toggleBookmark(btn) {
+        if (!isUserLoggedIn) return openLoginModal('bookmark');
+
         const bookId = btn.getAttribute('data-id');
         const title = btn.getAttribute('data-title');
         const author = btn.getAttribute('data-author');
@@ -669,7 +877,7 @@
                 body: JSON.stringify({ title, author })
             });
 
-            if (res.status === 401) return alert("Please log in to bookmark this book.");
+            if (res.status === 401) return openLoginModal('bookmark');
 
             const data = await res.json();
             if (data.success) {
@@ -751,14 +959,18 @@
     async function submitComment() {
         const text = document.getElementById('commentText').value;
         if (!text.trim()) return alert("Comment cannot be empty!");
+        const authorName = document.getElementById('likeBtn') 
+            ? document.getElementById('likeBtn').getAttribute('data-author') 
+            : 'Unknown Author';
+
         try {
             const res = await fetch(`/book/<%= book.id %>/comment`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     text: text, 
-                    title: <%- JSON.stringify(book.title) %>, 
-                    author: <%- JSON.stringify(book.authors.length > 0 ? book.authors[0].name : 'Unknown Author') %> 
+                    title: bookTitle, 
+                    author: authorName 
                 })
             });
             if (res.ok) document.getElementById('commentText').value = '';
@@ -767,10 +979,12 @@
     }
 
     async function likeComment(btn, commentId) {
+        if (!isUserLoggedIn) return openLoginModal('like');
+
         try {
             const res = await fetch(`/book/<%= book.id %>/comment/${commentId}/like`, { method: 'POST' });
             const data = await res.json();
-            if (data.error) return alert(data.error);
+            if (data.error) return openLoginModal('like');
 
             const countSpan = document.getElementById(`like-count-${commentId}`);
             countSpan.innerText = data.likesCount;
@@ -797,3 +1011,5 @@
         window.location.reload();
     });
 </script>
+</body>
+</html>
