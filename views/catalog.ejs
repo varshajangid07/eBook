@@ -3,112 +3,602 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalog | eBookShala</title>
+    <title>Browse Catalog | eBookShala</title>
     <link rel="icon" type="image/svg+xml" href="/logo/eBookShala_Logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: #F8F5E9;
             color: #333;
-            -webkit-font-smoothing: antialiased; 
-            -moz-osx-font-smoothing: grayscale;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; 
+            -webkit-font-smoothing: antialiased;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, .section-title {
             font-family: 'Playfair Display', serif;
-            letter-spacing: -0.5px; 
+            letter-spacing: -0.5px;
         }
 
-        .coming-soon-container {
-            flex: 1; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .catalog-header {
             text-align: center;
-            padding: 120px 20px 60px; 
+            padding: 60px 20px 30px 20px;
+            max-width: 950px;
+            margin: 0 auto;
         }
 
-        .icon {
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
+        .catalog-header h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            color: #222;
+            margin: 0 0 15px 0;
         }
 
-        .icon img {
-            width: 80px; 
-            height: auto;
-            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-
-        h1 {
-            font-size: 36px;
-            color: #333;
-            margin-bottom: 15px;
-            margin-top: 0;
-        }
-
-        p {
-            font-size: 18px;
+        .catalog-header p {
+            font-size: 17px;
             color: #666;
-            max-width: 500px;
-            line-height: 1.6;
-            margin-bottom: 35px;
+            margin: 0 0 35px 0;
         }
 
-        .btn-home {
-            padding: 12px 30px;
+        .search-form {
+            display: flex;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto 25px auto;
+            background: white;
+            padding: 6px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .search-form:focus-within {
+            box-shadow: 0 10px 30px rgba(211, 47, 47, 0.12);
+            border-color: #d32f2f;
+        }
+
+        .genre-select-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border-right: 1px solid #e0e0e0;
+            padding-left: 16px;
+            padding-right: 8px;
+        }
+
+        .genre-select-wrapper svg {
+            color: #d32f2f;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .genre-select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+            padding: 12px 8px 12px 0;
+            cursor: pointer;
+            max-width: 170px;
+            text-overflow: ellipsis;
+        }
+
+        .search-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 14px 20px;
             font-size: 16px;
-            font-weight: bold;
+            font-family: inherit;
+            background: transparent;
+            color: #333;
+            min-width: 0;
+        }
+
+        .search-btn {
             background-color: #d32f2f;
             color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(211, 47, 47, 0.3);
+            border: none;
+            padding: 14px 30px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
-        .btn-home:hover {
+        .search-btn:hover {
             background-color: #b71c1c;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
         }
-        
-        .navbar .logo, .navbar .nav-links a, .navbar .search-icon, .navbar .bell-icon, .navbar .hamburger {
-            color: #222 !important;
-            text-shadow: none !important;
+
+        .category-pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pill {
+            padding: 8px 18px;
+            border-radius: 25px;
+            background-color: white;
+            color: #555;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .pill:hover {
+            border-color: #d32f2f;
+            color: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        .pill.active {
+            background-color: #d32f2f;
+            color: white;
+            border-color: #d32f2f;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+        }
+
+        .toggle-genres-btn {
+            background-color: #fff0f0;
+            color: #d32f2f;
+            border: 1px dashed #d32f2f;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .toggle-genres-btn:hover {
+            background-color: #d32f2f;
+            color: white;
+            border-style: solid;
+        }
+
+        .all-genres-drawer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.45s ease, margin-top 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: left;
+            padding: 0 30px;
+        }
+
+        .all-genres-drawer.open {
+            max-height: 900px;
+            opacity: 1;
+            margin-top: 25px;
+            padding: 30px;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .genre-group {
+            margin-bottom: 22px;
+        }
+
+        .genre-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .genre-group-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #d32f2f;
+            margin: 0 0 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 6px;
+        }
+
+        .drawer-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .drawer-pills .pill {
+            font-size: 13px;
+            padding: 6px 14px;
+            background-color: #F8F5E9;
+        }
+
+        .drawer-pills .pill.active {
+            background-color: #d32f2f;
+            color: white;
+        }
+
+        .catalog-container {
+            max-width: 1200px;
+            margin: 0 auto 80px auto;
+            padding: 0 40px;
+            min-height: 400px;
+        }
+
+        .results-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(0,0,0,0.06);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .results-info h2 {
+            font-size: 24px;
+            margin: 0;
+            color: #333;
+            text-transform: capitalize;
+        }
+
+        .clear-search {
+            color: #d32f2f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .clear-search:hover {
+            text-decoration: underline;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            margin-bottom: 14px;
+            border-radius: 6px;
+            background-color: #f0f0f0;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 0 6px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #222;
+        }
+
+        .card-author {
+            font-size: 13px;
+            color: #777;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        #loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            font-weight: 600;
+            color: #d32f2f;
+        }
+
+        @media (max-width: 768px) {
+            .catalog-container {
+                padding: 0 20px;
+            }
+            .search-form {
+                flex-direction: column;
+                border-radius: 20px;
+                background: transparent;
+                box-shadow: none;
+                border: none;
+                gap: 10px;
+                align-items: stretch;
+            }
+            .genre-select-wrapper {
+                background: white;
+                border-radius: 30px;
+                padding: 4px 18px;
+                border-right: none;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            }
+            .genre-select {
+                max-width: 100%;
+                width: 100%;
+            }
+            .search-input {
+                background: white;
+                border-radius: 30px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            }
+            .search-btn {
+                justify-content: center;
+            }
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
+            }
+            .card img {
+                height: 200px;
+            }
+            .all-genres-drawer.open {
+                max-height: 1500px;
+                padding: 20px;
+            }
         }
     </style>
 </head>
-
 <body>
 
     <%- include('partials/navBar') %>
 
-    <div class="coming-soon-container">
-        <div class="icon">
-            <img src="/logo/eBookShala_Logo.svg" alt="eBookShala Logo">
+    <%
+        const genreGroups = {
+            "Fiction & Literature": [
+                { name: "Fiction", slug: "fiction" },
+                { name: "Fantasy", slug: "fantasy" },
+                { name: "Science Fiction", slug: "science_fiction" },
+                { name: "Mystery & Detective", slug: "mystery_and_detective_stories" },
+                { name: "Thriller", slug: "thrillers" },
+                { name: "Romance", slug: "romance" },
+                { name: "Historical Fiction", slug: "historical_fiction" },
+                { name: "Horror", slug: "horror" },
+                { name: "Adventure", slug: "adventure" },
+                { name: "Short Stories", slug: "short_stories" },
+                { name: "Classic Literature", slug: "literature" },
+                { name: "Poetry", slug: "poetry" },
+                { name: "Drama", slug: "drama" },
+                { name: "Humor", slug: "humor" }
+            ],
+            "Non-Fiction & History": [
+                { name: "Biography", slug: "biography" },
+                { name: "Autobiography", slug: "autobiographies" },
+                { name: "History", slug: "history" },
+                { name: "Ancient Civilization", slug: "ancient_civilization" },
+                { name: "World War II", slug: "world_war_ii" },
+                { name: "True Crime", slug: "crime" },
+                { name: "Philosophy", slug: "philosophy" },
+                { name: "Religion", slug: "religion" },
+                { name: "Politics & Government", slug: "politics_and_government" }
+            ],
+            "Science & Technology": [
+                { name: "Science", slug: "science" },
+                { name: "Physics", slug: "physics" },
+                { name: "Biology", slug: "biology" },
+                { name: "Chemistry", slug: "chemistry" },
+                { name: "Mathematics", slug: "mathematics" },
+                { name: "Astronomy", slug: "astronomy" },
+                { name: "Computer Science", slug: "computer_science" },
+                { name: "Programming", slug: "programming" },
+                { name: "Artificial Intelligence", slug: "artificial_intelligence" },
+                { name: "Medicine", slug: "medicine" }
+            ],
+            "Business, Mind & Lifestyle": [
+                { name: "Business", slug: "business" },
+                { name: "Economics", slug: "economics" },
+                { name: "Finance", slug: "finance" },
+                { name: "Entrepreneurship", slug: "entrepreneurship" },
+                { name: "Psychology", slug: "psychology" },
+                { name: "Self-Help", slug: "self-help" },
+                { name: "Mental Health", slug: "mental_health" },
+                { name: "Cooking", slug: "cooking" },
+                { name: "Travel", slug: "travel" },
+                { name: "Health & Fitness", slug: "health" }
+            ],
+            "Arts, Young Readers & Comics": [
+                { name: "Art & Architecture", slug: "art" },
+                { name: "Music", slug: "music" },
+                { name: "Photography", slug: "photography" },
+                { name: "Young Adult", slug: "young_adult_fiction" },
+                { name: "Children's Books", slug: "juvenile_fiction" }
+            ]
+        };
+
+        const popularPills = [
+            { name: "Fiction", slug: "fiction" },
+            { name: "Science Fiction", slug: "science_fiction" },
+            { name: "Fantasy", slug: "fantasy" },
+            { name: "Mystery", slug: "mystery_and_detective_stories" },
+            { name: "Romance", slug: "romance" },
+            { name: "History", slug: "history" },
+            { name: "Biography", slug: "biography" },
+            { name: "Self-Help", slug: "self-help" }
+        ];
+
+        const formattedCategoryName = currentCategory === 'all' 
+            ? 'All Categories' 
+            : currentCategory.replace(/_/g, ' ');
+    %>
+
+    <div class="catalog-header">
+        <h1>Explore Our Digital Library</h1>
+        <p>Search across millions of books or filter through 48+ curated genres.</p>
+
+        <form action="/catalog" method="GET" class="search-form" id="searchForm">
+            <div class="genre-select-wrapper">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                </svg>
+                <select name="category" class="genre-select" id="genreSelect" aria-label="Filter by Genre">
+                    <option value="all" <%= currentCategory === 'all' ? 'selected' : '' %>>All 48+ Genres</option>
+                    <% Object.keys(genreGroups).forEach(groupName => { %>
+                        <optgroup label="<%= groupName %>">
+                            <% genreGroups[groupName].forEach(genre => { %>
+                                <option value="<%= genre.slug %>" <%= currentCategory.toLowerCase() === genre.slug ? 'selected' : '' %>>
+                                    <%= genre.name %>
+                                </option>
+                            <% }) %>
+                        </optgroup>
+                    <% }) %>
+                </select>
+            </div>
+
+            <input 
+                type="text" 
+                name="q" 
+                class="search-input" 
+                placeholder="Search by book title, author, or ISBN..." 
+                value="<%= searchQuery %>"
+                autocomplete="off"
+            >
+            <button type="submit" class="search-btn">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 103.5 10.5a7.5 7.5 0 0013.15 6.15z"></path>
+                </svg>
+                Search
+            </button>
+        </form>
+
+        <div class="category-pills">
+            <% popularPills.forEach(cat => { %>
+                <a href="/catalog?category=<%= cat.slug %>" 
+                   class="pill nav-pill <%= currentCategory.toLowerCase() === cat.slug ? 'active' : '' %>">
+                    <%= cat.name %>
+                </a>
+            <% }) %>
+            <button type="button" class="pill toggle-genres-btn" id="toggleGenresBtn">
+                <span>+ All 48 Genres</span>
+            </button>
         </div>
-        <h1>Catalog Coming Soon</h1>
-        <p>We are currently organizing the shelves in our massive digital library! The full searching and browsing experience will be available very shortly.</p>
-        <a href="/" class="btn-home">Return to Home</a>
+
+        <div class="all-genres-drawer" id="allGenresDrawer">
+            <% Object.keys(genreGroups).forEach(groupName => { %>
+                <div class="genre-group">
+                    <h4 class="genre-group-title"><%= groupName %></h4>
+                    <div class="drawer-pills">
+                        <% genreGroups[groupName].forEach(genre => { %>
+                            <a href="/catalog?category=<%= genre.slug %>" 
+                               class="pill nav-pill <%= currentCategory.toLowerCase() === genre.slug ? 'active' : '' %>">
+                                <%= genre.name %>
+                            </a>
+                        <% }) %>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <div class="catalog-container">
+        <div id="loading-indicator">Searching the shelves...</div>
+
+        <div class="results-info">
+            <% if (searchQuery) { %>
+                <h2>
+                    Results for "<%= searchQuery %>" 
+                    <% if (currentCategory && currentCategory !== 'all') { %>
+                        in <%= formattedCategoryName %>
+                    <% } %>
+                </h2>
+                <a href="/catalog" class="clear-search">Reset Filter & Search</a>
+            <% } else { %>
+                <h2>Trending in <%= formattedCategoryName %></h2>
+            <% } %>
+        </div>
+
+        <% if (books && books.length > 0) { %>
+            <div class="books-grid" id="booksGrid">
+                <% books.forEach(function(book) { %>
+                    <a href="/book/<%= book.id %>" style="text-decoration: none; color: inherit;">
+                        <div class="card">
+                            <img src="<%= book.formats['image/jpeg'] %>" alt="<%= book.title %>" loading="lazy">
+                            <p class="card-title"><%= book.title %></p>
+                            <p class="card-author">
+                                <%= book.authors.length > 0 ? book.authors[0].name : "Unknown Author" %>
+                            </p>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="empty-state">
+                <h3>No books found</h3>
+                <p>We couldn't find any matches. Try selecting "All 48+ Genres" or using more general keywords.</p>
+                <a href="/catalog" class="search-btn" style="display: inline-flex; text-decoration: none;">Reset Catalog</a>
+            </div>
+        <% } %>
     </div>
 
     <%- include('partials/footer') %>
 
+    <script>
+        const searchForm = document.getElementById('searchForm');
+        const genreSelect = document.getElementById('genreSelect');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const booksGrid = document.getElementById('booksGrid');
+        const toggleGenresBtn = document.getElementById('toggleGenresBtn');
+        const allGenresDrawer = document.getElementById('allGenresDrawer');
+
+        function showLoading() {
+            loadingIndicator.style.display = 'block';
+            if (booksGrid) booksGrid.style.opacity = '0.4';
+        }
+
+        genreSelect.addEventListener('change', () => {
+            showLoading();
+            searchForm.submit();
+        });
+
+        searchForm.addEventListener('submit', () => {
+            showLoading();
+        });
+
+        document.querySelectorAll('.nav-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                showLoading();
+            });
+        });
+
+        toggleGenresBtn.addEventListener('click', () => {
+            const isOpen = allGenresDrawer.classList.toggle('open');
+            toggleGenresBtn.querySelector('span').textContent = isOpen ? '− Hide Genres' : '+ All 48 Genres';
+        });
+    </script>
 </body>
 </html>

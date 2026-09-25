@@ -417,13 +417,20 @@
 
     <div class="nav-links" id="navLinks">
 
-        <div class="search-container">
-            <svg class="search-svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <form action="/catalog" method="GET" class="search-container" id="navSearchForm" style="margin: 0;">
+            <svg class="search-svg" id="navSearchIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <input type="text" class="expanding-search" placeholder="Type to search...">
-        </div>
+            <input 
+                type="text" 
+                name="q" 
+                id="navSearchInput"
+                class="expanding-search" 
+                placeholder="Type to search..." 
+                autocomplete="off"
+            >
+        </form>
 
         <a href="/">Home</a>
         <a href="/catalog">Catalog</a>
@@ -489,10 +496,37 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const navbar = document.getElementById("myNavbar");
-        window.addEventListener("scroll", function () {
-            if (window.scrollY > 50) navbar.classList.add("scrolled");
-            else navbar.classList.remove("scrolled");
-        });
+        const navSearchForm = document.getElementById("navSearchForm");
+        const navSearchInput = document.getElementById("navSearchInput");
+
+        function updateNavbarTheme() {
+            if (window.location.pathname !== "/" || window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        }
+
+        updateNavbarTheme();
+        window.addEventListener("scroll", updateNavbarTheme);
+
+        if (navSearchForm && navSearchInput) {
+            window.addEventListener("pageshow", function () {
+                navSearchInput.value = "";
+                navSearchInput.blur();
+            });
+
+            navSearchInput.addEventListener("blur", function () {
+                navSearchInput.value = "";
+            });
+
+            navSearchForm.addEventListener("submit", function (e) {
+                if (navSearchInput.value.trim() === "") {
+                    e.preventDefault();
+                    navSearchInput.focus();
+                }
+            });
+        }
     });
 
     function toggleMobileMenu(event) {

@@ -191,8 +191,69 @@ app.get('/', async (req, res) => {
 app.use('/book', bookRoute);
 app.use('/', userRoute);
 
-app.get('/catalog', (req, res) => {
-    res.render('catalog', { currentUser: req.user }); 
+app.get('/catalog', async (req, res) => {
+    const searchQuery = req.query.q ? req.query.q.trim() : '';
+    const category = req.query.category || 'fiction';
+    let books = [];
+
+    try {
+        if (searchQuery !== '') {
+            let apiUrl = `https://openlibrary.org/search.json?q=${encodeURIComponent(searchQuery)}&limit=24`;
+            if (category && category !== 'all') {
+                const subjectName = category.replace(/_/g, ' ');
+                apiUrl += `&subject=${encodeURIComponent(subjectName)}`;
+            }
+
+            const response = await fetch(apiUrl);
+            if (!response.ok) throw new Error(`Search API status: ${response.status}`);
+            
+            const data = await response.json();
+            books = (data.docs || []).map(doc => ({
+                id: doc.key ? doc.key.replace('/works/', '') : "unknown",
+                title: doc.title || "Unknown Title",
+                authors: doc.author_name && doc.author_name.length > 0 
+                    ? [{ name: doc.author_name[0] }] 
+                    : [{ name: "Unknown Author" }],
+                formats: { 
+                    "image/jpeg": doc.cover_i 
+                        ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` 
+                        : "https://via.placeholder.com/150x240?text=No+Cover" 
+                }
+            }));
+        } else {
+            const targetSubject = category === 'all' ? 'fiction' : category.toLowerCase();
+            const response = await fetch(`https://openlibrary.org/subjects/${encodeURIComponent(targetSubject)}.json?limit=24`);
+            if (!response.ok) throw new Error(`Subject API status: ${response.status}`);
+            
+            const data = await response.json();
+            books = (data.works || []).map(book => ({
+                id: book.key ? book.key.replace('/works/', '') : "unknown",
+                title: book.title || "Unknown Title",
+                authors: book.authors && book.authors.length > 0 
+                    ? [{ name: book.authors[0].name }] 
+                    : [{ name: "Unknown Author" }],
+                formats: { 
+                    "image/jpeg": book.cover_id 
+                        ? `https://covers.openlibrary.org/b/id/${book.cover_id}-L.jpg` 
+                        : "https://via.placeholder.com/150x240?text=No+Cover" 
+                }
+            }));
+        }
+
+        res.render('catalog', { 
+            books: books, 
+            searchQuery: searchQuery, 
+            currentCategory: category 
+        });
+
+    } catch (error) {
+        console.error('Catalog API error:', error.message);
+        res.render('catalog', { 
+            books: [], 
+            searchQuery: searchQuery, 
+            currentCategory: category 
+        });
+    }
 });
 
 server.listen(PORT, '0.0.0.0', () => {
