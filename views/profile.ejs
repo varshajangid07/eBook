@@ -3,44 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - eBookShala</title>
+    <title><%= currentUser.name %> | eBookShala</title>
     <link rel="icon" type="image/svg+xml" href="/logo/eBookShala_Logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
         rel="stylesheet">
     <style>
         :root {
             --primary: #783535;
-            --primary-light: rgba(120, 53, 53, 0.1);
             --primary-hover: #5a2828;
             --bg-color: #F8F5E9;
-            --text-main: #1a1a1a;
-            --text-muted: #666;
-            --border-color: #eaeaea;
+            --text-main: #1f1d1a;
+            --text-muted: #6e6a63;
+            --border-color: #e8e2d5;
+
+            --ochre: #b86b1b;
+            --ochre-bg: #fdf6ec;
+            --ochre-border: #f3dfc1;
+
+            --sage: #3d6b52;
+            --sage-bg: #f0f6f2;
+            --sage-border: #cce3d5;
+
+            --wine: #9e2a47;
+            --wine-bg: #fdf2f4;
+            --wine-border: #f2ced7;
         }
 
         body {
             background-color: var(--bg-color);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
             margin: 0;
             color: var(--text-main);
         }
 
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-            letter-spacing: -0.5px; 
+        .navbar .logo-icon {
+            filter: brightness(0) !important;
+        }
+        .navbar .logo,
+        .navbar .nav-links a:not(.user-profile),
+        .navbar .search-svg,
+        .navbar .bell-icon {
+            color: #222 !important;
+            text-shadow: none !important;
+            filter: none !important;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', Georgia, serif;
+            letter-spacing: -0.3px;
         }
 
         .page-container {
-            max-width: 1150px;
-            margin: 110px auto 60px auto;
+            max-width: 1180px;
+            margin: 105px auto 70px auto;
             padding: 0 24px;
             display: flex;
-            gap: 40px;
+            gap: 36px;
             align-items: flex-start;
         }
 
@@ -48,13 +70,13 @@
             background: #fff;
             width: 340px;
             border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 10px 30px rgba(31, 29, 26, 0.05);
             text-align: center;
             flex-shrink: 0;
             position: sticky;
-            top: 110px;
+            top: 95px;
             overflow: hidden;
-            border: 1px solid rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--border-color);
             box-sizing: border-box;
         }
 
@@ -63,28 +85,52 @@
             background: linear-gradient(135deg, #783535 0%, #4a1f1f 100%);
             width: 100%;
             position: relative;
+            transition: background 0.4s ease;
         }
 
         .profile-banner::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px);
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.14) 1.5px, transparent 1.5px);
             background-size: 20px 20px;
         }
 
+        .cloth-swatches {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            z-index: 5;
+            display: flex;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(6px);
+            padding: 5px 8px;
+            border-radius: 20px;
+        }
+
+        .swatch {
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1.5px solid rgba(255, 255, 255, 0.85);
+            transition: transform 0.2s ease;
+        }
+
+        .swatch:hover {
+            transform: scale(1.2);
+        }
+
         .profile-info-container {
-            padding: 0 32px 32px 32px;
+            padding: 0 28px 30px 28px;
         }
 
         .avatar-wrapper {
             position: relative;
-            width: 140px;
-            height: 140px;
-            margin: -70px auto 16px auto;
+            width: 128px;
+            height: 128px;
+            margin: -64px auto 14px auto;
             z-index: 2;
         }
 
@@ -93,23 +139,23 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 6px solid #fff;
+            border: 5px solid #fff;
             background: #fff;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1);
             box-sizing: border-box;
         }
 
         .profile-name {
-            font-size: 24px;
+            font-size: 25px;
             font-weight: 700;
             margin: 0 0 4px 0;
-            letter-spacing: -0.5px;
+            color: var(--text-main);
         }
 
         .profile-email {
-            font-size: 15px;
+            font-size: 13.5px;
             color: var(--text-muted);
-            margin: 0 0 24px 0;
+            margin: 0 0 22px 0;
             word-break: break-all;
         }
 
@@ -118,39 +164,46 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 24px;
-            padding: 20px 0;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
         }
 
         .stat-item {
+            padding: 13px 6px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             gap: 4px;
-            position: relative;
         }
 
-        .stat-item:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            right: -5px;
-            top: 10%;
-            height: 80%;
-            width: 1px;
-            background-color: var(--border-color);
+        .stat-item.ochre {
+            background: var(--ochre-bg);
+            border: 1px solid var(--ochre-border);
         }
+        .stat-item.ochre .stat-value { color: var(--ochre); }
+
+        .stat-item.sage {
+            background: var(--sage-bg);
+            border: 1px solid var(--sage-border);
+        }
+        .stat-item.sage .stat-value { color: var(--sage); }
+
+        .stat-item.wine {
+            background: var(--wine-bg);
+            border: 1px solid var(--wine-border);
+        }
+        .stat-item.wine .stat-value { color: var(--wine); }
 
         .stat-value {
-            font-size: 20px;
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
             font-weight: 700;
-            color: var(--primary);
+            line-height: 1;
         }
 
         .stat-label {
-            font-size: 12px;
-            color: var(--text-muted);
+            font-size: 10.5px;
+            color: #5c5852;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             font-weight: 600;
         }
 
@@ -160,7 +213,7 @@
             border: none;
             padding: 14px 24px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14.5px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -169,49 +222,139 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
-            box-sizing: border-box;
         }
 
         .edit-btn:hover {
             background-color: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(120, 53, 53, 0.25);
+            box-shadow: 0 6px 16px rgba(120, 53, 53, 0.2);
         }
 
         .profile-content {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 24px;
             min-width: 0;
+        }
+
+        .shelf-toolbar {
+            background: #fff;
+            padding: 12px 18px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .shelf-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .tab-indicator {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .tab-btn:hover {
+            background: #f7f4ec;
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--text-main);
+            color: #fff;
+        }
+
+        .shelf-search {
+            position: relative;
+            min-width: 220px;
+        }
+
+        .shelf-search input {
+            width: 100%;
+            padding: 8px 14px 8px 34px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            font-size: 13.5px;
+            font-family: inherit;
+            outline: none;
+            box-sizing: border-box;
+            background: #faf8f3;
+            transition: all 0.2s;
+        }
+
+        .shelf-search input:focus {
+            background: #fff;
+            border-color: var(--primary);
+        }
+
+        .shelf-search svg {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
         }
 
         .section-box {
             background: #fff;
-            padding: 32px;
+            padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0, 0, 0, 0.02);
+            box-shadow: 0 6px 24px rgba(31, 29, 26, 0.03);
+            border: 1px solid var(--border-color);
         }
 
         .section-header {
             display: flex;
             align-items: center;
-            gap: 16px;
+            justify-content: space-between;
             margin-bottom: 24px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f2eee4;
+        }
+
+        .section-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
         .icon-badge {
-            width: 44px;
-            height: 44px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
-            background: var(--primary-light);
-            color: var(--primary);
             display: flex;
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
         }
+
+        .badge-ochre { background: var(--ochre-bg); color: var(--ochre); border: 1px solid var(--ochre-border); }
+        .badge-sage  { background: var(--sage-bg);  color: var(--sage);  border: 1px solid var(--sage-border); }
+        .badge-wine  { background: var(--wine-bg);  color: var(--wine);  border: 1px solid var(--wine-border); }
 
         .section-title {
             font-size: 20px;
@@ -219,70 +362,117 @@
             margin: 0;
         }
 
+        .count-tag {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
         .empty-state {
             text-align: center;
-            color: var(--text-muted);
-            font-size: 15px;
-            padding: 48px 20px;
-            background: #fcfcfc;
-            border-radius: 16px;
-            border: 2px dashed var(--border-color);
+            padding: 38px 24px;
+            border-radius: 14px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 16px;
+            gap: 10px;
         }
 
-        .empty-state svg {
-            color: #d0d0d0;
+        .empty-ochre { background: var(--ochre-bg); border: 1px dashed var(--ochre-border); color: #7c4810; }
+        .empty-sage  { background: var(--sage-bg);  border: 1px dashed var(--sage-border);  color: #2b4c3a; }
+        .empty-wine  { background: var(--wine-bg);  border: 1px dashed var(--wine-border);  color: #6e1c31; }
+
+        .empty-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            margin: 4px 0 0 0;
+        }
+
+        .empty-sub {
+            font-size: 13.5px;
+            opacity: 0.85;
+            margin: 0 0 8px 0;
+        }
+
+        .catalog-link {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid rgba(0,0,0,0.12);
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .catalog-link:hover {
+            background: var(--text-main);
+            color: #fff;
         }
 
         .profile-book-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 24px;
         }
 
         .profile-book-card {
-            background: #fff;
-            border-radius: 12px;
             text-decoration: none;
             color: inherit;
-            transition: transform 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
         .profile-book-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            border-color: var(--primary);
+            transform: translateY(-6px);
         }
 
-        .profile-book-card img {
+        .book-cover-frame {
+            position: relative;
             width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: #f0f0f0;
+            height: 210px;
+            border-radius: 4px 10px 10px 4px;
+            overflow: hidden;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12), -2px 0 5px rgba(0, 0, 0, 0.08);
+            background: #eee9dc;
+            margin-bottom: 10px;
         }
 
-        .profile-book-info {
-            padding: 12px;
+        .book-cover-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 10px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(0,0,0,0.18) 50%, transparent 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .book-cover-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .profile-book-info .title {
             font-size: 14px;
             font-weight: 700;
-            margin: 0 0 4px 0;
+            margin: 0 0 3px 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: var(--text-main);
         }
 
         .profile-book-info .author {
-            font-size: 12px;
+            font-size: 12.5px;
             color: var(--text-muted);
             margin: 0;
             white-space: nowrap;
@@ -293,53 +483,25 @@
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 0.25s ease;
             padding: 20px;
             box-sizing: border-box;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
         .modal-card {
             background: #fff;
-            padding: 40px;
-            border-radius: 24px;
+            padding: 38px;
+            border-radius: 22px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
             position: relative;
             box-sizing: border-box;
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
         }
 
         .close-btn {
@@ -353,22 +515,15 @@
             padding: 4px;
             border-radius: 50%;
             display: flex;
-            transition: background 0.2s;
-        }
-
-        .close-btn:hover {
-            background: #f0f0f0;
-            color: #222;
         }
 
         .modal-card h2 {
-            margin-top: 0;
-            margin-bottom: 30px;
+            margin: 0 0 24px 0;
             font-size: 24px;
         }
 
         .input-group {
-            margin-bottom: 24px;
+            margin-bottom: 22px;
         }
 
         .input-group label {
@@ -387,35 +542,21 @@
             box-sizing: border-box;
             font-size: 15px;
             font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .input-group input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-light);
         }
 
         .file-upload-wrapper {
             position: relative;
             border: 2px dashed var(--border-color);
             border-radius: 12px;
-            padding: 30px;
+            padding: 28px;
             text-align: center;
-            background: #fafafa;
-            transition: all 0.2s;
+            background: #faf8f3;
             cursor: pointer;
-        }
-
-        .file-upload-wrapper:hover {
-            border-color: var(--primary);
-            background: var(--primary-light);
         }
 
         .file-upload-wrapper input[type="file"] {
             position: absolute;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
             opacity: 0;
@@ -434,19 +575,17 @@
 
         .modal-buttons {
             display: flex;
-            gap: 16px;
-            margin-top: 36px;
+            gap: 14px;
+            margin-top: 30px;
         }
 
-        .save-btn,
-        .cancel-btn {
+        .save-btn, .cancel-btn {
             padding: 14px;
             border-radius: 12px;
             flex: 1;
             cursor: pointer;
             font-weight: 600;
             font-size: 15px;
-            transition: all 0.2s;
         }
 
         .save-btn {
@@ -455,67 +594,21 @@
             border: none;
         }
 
-        .save-btn:hover {
-            background: var(--primary-hover);
-        }
-
         .cancel-btn {
             background: transparent;
             color: var(--text-muted);
             border: 1.5px solid var(--border-color);
         }
 
-        .cancel-btn:hover {
-            background: #f0f0f0;
-            color: #222;
-        }
-
-        @media (max-width: 900px) {
+        @media (max-width: 960px) {
             .page-container {
                 flex-direction: column;
-                margin-top: 100px;
-                gap: 25px;
+                margin-top: 95px;
             }
-
-            .profile-sidebar,
-            .profile-content {
+            .profile-sidebar, .profile-content {
                 width: 100%;
-            }
-
-            .profile-sidebar {
                 position: relative;
                 top: 0;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .page-container {
-                padding: 0 16px;
-                margin-top: 90px;
-            }
-
-            .profile-banner {
-                height: 100px;
-            }
-
-            .avatar-wrapper {
-                width: 110px;
-                height: 110px;
-                margin-top: -55px;
-            }
-
-            .section-box {
-                padding: 24px 20px;
-            }
-
-            .modal-buttons {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .save-btn,
-            .cancel-btn {
-                width: 100%;
             }
         }
     </style>
@@ -524,252 +617,287 @@
 
     <%- include('partials/navBar') %>
 
-        <div class="page-container">
+    <%
+        const readsCount = currentUser.recentReads ? currentUser.recentReads.length : 0;
+        const savedCount = currentUser.bookmarks ? currentUser.bookmarks.length : 0;
+        const likesCount = currentUser.likedBooks ? currentUser.likedBooks.length : 0;
+    %>
 
-            <div class="profile-sidebar">
-                <div class="profile-banner"></div>
+    <div class="page-container">
 
-                <div class="profile-info-container">
-                    <div class="avatar-wrapper">
-                        <img src="<%= currentUser.profilePhoto ? currentUser.profilePhoto : 'https://ui-avatars.com/api/?name=' + currentUser.name + '&background=783535&color=fff&size=300&font-size=0.35&bold=true' %>"
-                            alt="Profile" class="profile-photo">
-                    </div>
-
-                    <h2 class="profile-name">
-                        <%= currentUser.name %>
-                    </h2>
-                    <p class="profile-email">
-                        <%= currentUser.email %>
-                    </p>
-
-                    <div class="profile-stats">
-                        <div class="stat-item">
-                            <span class="stat-value">
-                                <%= currentUser.recentReads ? currentUser.recentReads.length : 0 %>
-                            </span>
-                            <span class="stat-label">Reads</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">
-                                <%= currentUser.bookmarks ? currentUser.bookmarks.length : 0 %>
-                            </span>
-                            <span class="stat-label">Saved</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">
-                                <%= currentUser.likedBooks ? currentUser.likedBooks.length : 0 %>
-                            </span>
-                            <span class="stat-label">Likes</span>
-                        </div>
-                    </div>
-
-                    <button class="edit-btn" onclick="openModal()">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                        </svg>
-                        Edit Profile
-                    </button>
+        <div class="profile-sidebar">
+            <div class="profile-banner" id="profileBanner">
+                <div class="cloth-swatches" title="Select Banner Color">
+                    <span class="swatch" style="background: #783535;" onclick="setCloth('linear-gradient(135deg, #783535 0%, #4a1f1f 100%)')"></span>
+                    <span class="swatch" style="background: #2f5241;" onclick="setCloth('linear-gradient(135deg, #3d6b52 0%, #1e382b 100%)')"></span>
+                    <span class="swatch" style="background: #2b4560;" onclick="setCloth('linear-gradient(135deg, #2b4560 0%, #162638 100%)')"></span>
+                    <span class="swatch" style="background: #9c5227;" onclick="setCloth('linear-gradient(135deg, #b86b1b 0%, #6e390c 100%)')"></span>
                 </div>
             </div>
 
-            <div class="profile-content">
+            <div class="profile-info-container">
+                <div class="avatar-wrapper">
+                    <img src="<%= currentUser.profilePhoto ? currentUser.profilePhoto : 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.name) + '&background=783535&color=fff&size=300&font-size=0.35&bold=true' %>"
+                        alt="Profile" class="profile-photo">
+                </div>
 
-                <div class="section-box">
-                    <div class="section-header">
-                        <div class="icon-badge">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
+                <h2 class="profile-name"><%= currentUser.name %></h2>
+                <p class="profile-email"><%= currentUser.email %></p>
+
+                <div class="profile-stats">
+                    <div class="stat-item ochre">
+                        <span class="stat-value"><%= readsCount %></span>
+                        <span class="stat-label">Read</span>
+                    </div>
+                    <div class="stat-item sage">
+                        <span class="stat-value"><%= savedCount %></span>
+                        <span class="stat-label">Saved</span>
+                    </div>
+                    <div class="stat-item wine">
+                        <span class="stat-value"><%= likesCount %></span>
+                        <span class="stat-label">Loved</span>
+                    </div>
+                </div>
+
+                <button class="edit-btn" onclick="openModal()">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Edit Profile
+                </button>
+            </div>
+        </div>
+
+        <div class="profile-content">
+
+            <div class="shelf-toolbar">
+                <div class="shelf-tabs">
+                    <button class="tab-btn active" onclick="switchTab('all', this)">All Collections</button>
+                    <button class="tab-btn" onclick="switchTab('reads', this)">
+                        <span class="tab-indicator" style="background: var(--ochre);"></span> Recent Reads (<%= readsCount %>)
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('bookmarks', this)">
+                        <span class="tab-indicator" style="background: var(--sage);"></span> Bookmarks (<%= savedCount %>)
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('likes', this)">
+                        <span class="tab-indicator" style="background: var(--wine);"></span> Favorites (<%= likesCount %>)
+                    </button>
+                </div>
+
+                <div class="shelf-search">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="text" id="shelfSearchInput" placeholder="Search my shelves..." oninput="filterShelfBooks()">
+                </div>
+            </div>
+
+            <div class="section-box shelf-section" data-shelf="reads">
+                <div class="section-header">
+                    <div class="section-header-left">
+                        <div class="icon-badge badge-ochre">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                             </svg>
                         </div>
                         <h3 class="section-title">Recent Reads</h3>
                     </div>
-
-                    <% if (currentUser.recentReads && currentUser.recentReads.length> 0) { %>
-                        <div class="profile-book-grid">
-                            <% currentUser.recentReads.forEach(book=> { %>
-                                <a href="/book/<%= book.bookId %>" class="profile-book-card">
-                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
-                                        onerror="this.src='https://via.placeholder.com/150x200?text=No+Cover'"
-                                        alt="Cover">
-                                    <div class="profile-book-info">
-                                        <p class="title">
-                                            <%= book.title %>
-                                        </p>
-                                        <p class="author">
-                                            <%= book.author %>
-                                        </p>
-                                    </div>
-                                </a>
-                                <% }) %>
-                        </div>
-                        <% } else { %>
-                            <div class="empty-state">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.5">
-                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-                                </svg>
-                                <span>Your reading history will appear here.</span>
-                            </div>
-                            <% } %>
+                    <span class="count-tag badge-ochre"><%= readsCount %> Volumes</span>
                 </div>
 
-                <div class="section-box">
-                    <div class="section-header">
-                        <div class="icon-badge">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <% if (currentUser.recentReads && currentUser.recentReads.length > 0) { %>
+                    <div class="profile-book-grid">
+                        <% currentUser.recentReads.forEach(book => { %>
+                            <a href="/book/<%= book.bookId %>" class="profile-book-card" data-title="<%= (book.title || '').toLowerCase() %>" data-author="<%= (book.author || '').toLowerCase() %>">
+                                <div class="book-cover-frame">
+                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
+                                        onerror="this.onerror=null; this.src='https://placehold.co/300x450/fdf6ec/b86b1b?text=<%= encodeURIComponent(book.title || 'Book') %>';"
+                                        alt="Cover">
+                                </div>
+                                <div class="profile-book-info">
+                                    <p class="title"><%= book.title %></p>
+                                    <p class="author"><%= book.author %></p>
+                                </div>
+                            </a>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state empty-ochre">
+                        <p class="empty-title">No Volumes in Your Reading History Yet</p>
+                        <p class="empty-sub">Books you open from the catalog will be archived here automatically.</p>
+                        <a href="/catalog" class="catalog-link">Browse the Catalog</a>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="section-box shelf-section" data-shelf="bookmarks">
+                <div class="section-header">
+                    <div class="section-header-left">
+                        <div class="icon-badge badge-sage">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                             </svg>
                         </div>
                         <h3 class="section-title">My Bookmarks</h3>
                     </div>
-
-                    <% if (currentUser.bookmarks && currentUser.bookmarks.length> 0) { %>
-                        <div class="profile-book-grid">
-                            <% currentUser.bookmarks.forEach(book=> { %>
-                                <a href="/book/<%= book.bookId %>" class="profile-book-card">
-                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
-                                        onerror="this.src='https://via.placeholder.com/150x200?text=No+Cover'"
-                                        alt="Cover">
-                                    <div class="profile-book-info">
-                                        <p class="title">
-                                            <%= book.title %>
-                                        </p>
-                                        <p class="author">
-                                            <%= book.author %>
-                                        </p>
-                                    </div>
-                                </a>
-                                <% }) %>
-                        </div>
-                        <% } else { %>
-                            <div class="empty-state">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.5">
-                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                                </svg>
-                                <span>Books you bookmark for later will be saved here.</span>
-                            </div>
-                            <% } %>
+                    <span class="count-tag badge-sage"><%= savedCount %> Saved</span>
                 </div>
 
-                <div class="section-box">
-                    <div class="section-header">
-                        <div class="icon-badge">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                </path>
+                <% if (currentUser.bookmarks && currentUser.bookmarks.length > 0) { %>
+                    <div class="profile-book-grid">
+                        <% currentUser.bookmarks.forEach(book => { %>
+                            <a href="/book/<%= book.bookId %>" class="profile-book-card" data-title="<%= (book.title || '').toLowerCase() %>" data-author="<%= (book.author || '').toLowerCase() %>">
+                                <div class="book-cover-frame">
+                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
+                                        onerror="this.onerror=null; this.src='https://placehold.co/300x450/f0f6f2/3d6b52?text=<%= encodeURIComponent(book.title || 'Book') %>';"
+                                        alt="Cover">
+                                </div>
+                                <div class="profile-book-info">
+                                    <p class="title"><%= book.title %></p>
+                                    <p class="author"><%= book.author %></p>
+                                </div>
+                            </a>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <div class="empty-state empty-sage">
+                        <p class="empty-title">Your Reading List Is Empty</p>
+                        <p class="empty-sub">Bookmark titles you wish to set aside for future reading.</p>
+                        <a href="/catalog" class="catalog-link">Discover Titles</a>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="section-box shelf-section" data-shelf="likes">
+                <div class="section-header">
+                    <div class="section-header-left">
+                        <div class="icon-badge badge-wine">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                             </svg>
                         </div>
                         <h3 class="section-title">Liked Books</h3>
                     </div>
-
-                    <% if (currentUser.likedBooks && currentUser.likedBooks.length> 0) { %>
-                        <div class="profile-book-grid">
-                            <% currentUser.likedBooks.forEach(book=> { %>
-                                <a href="/book/<%= book.bookId %>" class="profile-book-card">
-                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
-                                        onerror="this.src='https://via.placeholder.com/150x200?text=No+Cover'"
-                                        alt="Cover">
-                                    <div class="profile-book-info">
-                                        <p class="title">
-                                            <%= book.title %>
-                                        </p>
-                                        <p class="author">
-                                            <%= book.author %>
-                                        </p>
-                                    </div>
-                                </a>
-                                <% }) %>
-                        </div>
-                        <% } else { %>
-                            <div class="empty-state">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.5">
-                                    <path
-                                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                                    </path>
-                                </svg>
-                                <span>Heart your favorite books to add them to this list.</span>
-                            </div>
-                            <% } %>
+                    <span class="count-tag badge-wine"><%= likesCount %> Favorites</span>
                 </div>
 
-            </div>
-        </div>
-
-        <div class="modal-overlay" id="editModal">
-            <div class="modal-card">
-                <button class="close-btn" onclick="closeModal()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-
-                <h2>Edit Profile</h2>
-                <form action="/profile/edit" method="POST" enctype="multipart/form-data">
-
-                    <div class="input-group">
-                        <label for="name">Display Name</label>
-                        <input type="text" id="name" name="name" value="<%= currentUser.name %>" required>
+                <% if (currentUser.likedBooks && currentUser.likedBooks.length > 0) { %>
+                    <div class="profile-book-grid">
+                        <% currentUser.likedBooks.forEach(book => { %>
+                            <a href="/book/<%= book.bookId %>" class="profile-book-card" data-title="<%= (book.title || '').toLowerCase() %>" data-author="<%= (book.author || '').toLowerCase() %>">
+                                <div class="book-cover-frame">
+                                    <img src="https://www.gutenberg.org/cache/epub/<%= book.bookId %>/pg<%= book.bookId %>.cover.medium.jpg"
+                                        onerror="this.onerror=null; this.src='https://placehold.co/300x450/fdf2f4/9e2a47?text=<%= encodeURIComponent(book.title || 'Book') %>';"
+                                        alt="Cover">
+                                </div>
+                                <div class="profile-book-info">
+                                    <p class="title"><%= book.title %></p>
+                                    <p class="author"><%= book.author %></p>
+                                </div>
+                            </a>
+                        <% }) %>
                     </div>
+                <% } else { %>
+                    <div class="empty-state empty-wine">
+                        <p class="empty-title">No Favorites Curated Yet</p>
+                        <p class="empty-sub">Mark the books that moved you most to keep them in your permanent collection.</p>
+                        <a href="/catalog" class="catalog-link">Explore Classics</a>
+                    </div>
+                <% } %>
+            </div>
 
-                    <div class="input-group">
-                        <label>Profile Picture</label>
-                        <div class="file-upload-wrapper">
-                            <input type="file" id="profilePhoto" name="profilePhoto" accept="image/png, image/jpeg"
-                                onchange="updateFileName(this)">
-                            <div class="upload-text" id="fileNameDisplay">
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                    style="color: #783535;">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="17 8 12 3 7 8"></polyline>
-                                    <line x1="12" y1="3" x2="12" y2="15"></line>
-                                </svg>
-                                <span>Click to browse or drag image here</span>
-                                <span style="font-size: 12px; font-weight: normal; margin-top: 4px;">Supports JPG, PNG
-                                    (Max 2MB)</span>
-                            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <div class="modal-card">
+            <button class="close-btn" onclick="closeModal()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <h2>Edit Profile</h2>
+            <form action="/profile/edit" method="POST" enctype="multipart/form-data">
+
+                <div class="input-group">
+                    <label for="name">Display Name</label>
+                    <input type="text" id="name" name="name" value="<%= currentUser.name %>" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Profile Picture</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="profilePhoto" name="profilePhoto" accept="image/png, image/jpeg"
+                            onchange="updateFileName(this)">
+                        <div class="upload-text" id="fileNameDisplay">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" style="color: #783535;">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            <span>Click to browse or drag image here</span>
+                            <span style="font-size: 12px; font-weight: normal;">Supports JPG, PNG (Max 2MB)</span>
                         </div>
                     </div>
+                </div>
 
-                    <div class="modal-buttons">
-                        <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
-                        <button type="submit" class="save-btn">Save Changes</button>
-                    </div>
-                </form>
-            </div>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="save-btn">Save Changes</button>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <script>
-            const modal = document.getElementById('editModal');
+    <script>
+        const modal = document.getElementById('editModal');
+        function openModal() { modal.style.display = 'flex'; }
+        function closeModal() { modal.style.display = 'none'; }
+        window.onclick = function (event) { if (event.target == modal) closeModal(); };
 
-            function openModal() { modal.style.display = 'flex'; }
-            function closeModal() { modal.style.display = 'none'; }
-
-            window.onclick = function (event) {
-                if (event.target == modal) { closeModal(); }
-            }
-
-            function updateFileName(input) {
-                const display = document.getElementById('fileNameDisplay');
-                if (input.files && input.files.length > 0) {
-                    display.innerHTML = `
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        function updateFileName(input) {
+            const display = document.getElementById('fileNameDisplay');
+            if (input.files && input.files.length > 0) {
+                display.innerHTML = `
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3d6b52" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                     <span style="color: #222; font-weight: 600; margin-top: 8px;">${input.files[0].name} selected</span>
                 `;
-                }
             }
-        </script>
+        }
+
+        const bannerEl = document.getElementById('profileBanner');
+        const savedCloth = localStorage.getItem('ebookshala_cloth_theme');
+        if (savedCloth) bannerEl.style.background = savedCloth;
+
+        function setCloth(gradient) {
+            bannerEl.style.background = gradient;
+            localStorage.setItem('ebookshala_cloth_theme', gradient);
+        }
+
+        function switchTab(shelfName, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            document.querySelectorAll('.shelf-section').forEach(section => {
+                section.style.display = (shelfName === 'all' || section.getAttribute('data-shelf') === shelfName) ? 'block' : 'none';
+            });
+        }
+
+        function filterShelfBooks() {
+            const query = document.getElementById('shelfSearchInput').value.toLowerCase().trim();
+            document.querySelectorAll('.profile-book-card').forEach(card => {
+                const title = card.getAttribute('data-title') || '';
+                const author = card.getAttribute('data-author') || '';
+                card.style.display = (title.includes(query) || author.includes(query)) ? 'flex' : 'none';
+            });
+        }
+    </script>
 </body>
 </html>
