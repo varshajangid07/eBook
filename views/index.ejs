@@ -389,6 +389,347 @@
             transform: translateY(-5px);
         }
 
+        .faq-section {
+            padding: 60px 20px;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+
+        .faq-container {
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .faq-question {
+            padding: 20px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #d32f2f;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 28px;
+            font-weight: 400;
+            color: #d32f2f;
+            transition: transform 0.4s ease;
+        }
+
+        .faq-item.active .faq-question::after {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease;
+            background-color: #faf9f5;
+        }
+
+        .faq-answer p {
+            margin: 0;
+            padding: 0 25px 20px 25px;
+            color: #555;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px; 
+        }
+
+        .final-cta-section {
+            background: linear-gradient(135deg, #d32f2f 0%, #9a0007 100%);
+            color: white;
+            text-align: center;
+            padding: 70px 20px;
+            margin-top: 40px;
+        }
+
+        .final-cta-section h2 {
+            font-size: 36px;
+            margin: 0 0 15px 0;
+            color: white;
+        }
+
+        .final-cta-section p {
+            font-size: 18px;
+            margin: 0 0 30px 0;
+            opacity: 0.9;
+        }
+
+        .cta-btn-inverted {
+            background-color: white;
+            color: #d32f2f !important;
+            border: 2px solid white !important;
+            padding: 15px 40px;
+            font-size: 18px;
+        }
+
+        .cta-btn-inverted:hover {
+            background-color: transparent;
+            color: white !important;
+        }
+
+        .community-stats-section {
+            position: relative;
+            background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; 
+            padding: 90px 40px;
+            max-width: 1120px;
+            margin: 60px auto;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .stats-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(26, 5, 5, 0.75) 100%);
+            z-index: 1;
+        }
+
+        .stats-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .text-light {
+            color: #ffffff !important;
+        }
+
+        .text-light::after {
+            background-color: #d32f2f !important;
+        }
+
+        .stats-subtitle {
+            color: #e0e0e0; 
+            text-align: center; 
+            max-width: 600px; 
+            margin: 0 auto 50px auto; 
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 40px 30px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-item h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            margin: 0 0 10px 0;
+            color: #ffffff;
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .stat-item p {
+            font-size: 15px;
+            margin: 0;
+            color: #ffb3b3; 
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Split Text & Image Section */
+        .split-section {
+            background-color: white;
+            padding: 80px 60px;
+            max-width: 1100px;
+            margin: 60px auto 80px auto; 
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .split-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .split-text {
+            flex: 1;
+        }
+
+        .split-text .section-title {
+            margin-bottom: 20px;
+        }
+
+        .split-text p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            color: #444;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .feature-list li svg {
+            color: #d32f2f;
+            flex-shrink: 0;
+        }
+
+        .split-image-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .split-image {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            object-fit: cover;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .split-image:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .reveal-left.show, .reveal-right.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        @media (max-width: 900px) {
+            .split-section {
+                padding: 50px 40px;
+                margin: 40px 20px;
+            }
+            .split-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+            .split-text {
+                text-align: center;
+            }
+            .split-text .section-title::after {
+                margin: 10px auto 0 auto; 
+            }
+            .feature-list li {
+                justify-content: center;
+                text-align: left;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .split-section {
+                padding: 40px 20px;
+                margin: 40px 15px;
+            }
+            .split-image {
+                border-radius: 12px;
+            }
+            .feature-list li {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .community-stats-section { 
+                padding: 60px 30px; 
+                margin: 40px 20px; 
+                background-attachment: scroll; 
+            }
+        }
+
+        @media (max-width: 600px) {
+            .community-stats-section { 
+                padding: 50px 20px; 
+                margin: 30px 15px; 
+            }
+            .stat-item { 
+                padding: 30px 20px; 
+            }
+            .stat-item h3 {
+                font-size: 42px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .community-stats-section { 
+                padding: 40px 20px; 
+                margin: 20px 15px 40px 15px; 
+            }
+            .stat-item { 
+                padding: 30px 20px; 
+            }
+        }
+
 
         @media (max-width: 900px) {
             .features-section {
@@ -402,6 +743,14 @@
             .about-platform-section {
                 padding: 60px 40px;
                 margin: 20px 20px 60px 20px;
+            }
+
+            .stats-grid { 
+                gap: 20px; 
+            }
+            .stat-item { 
+                min-width: 100%; 
+                padding: 25px; 
             }
         }
 
@@ -452,6 +801,17 @@
 
             .info-card {
                 padding: 30px 20px;
+            }
+
+            .faq-section {
+                padding: 40px 15px;
+            }
+            .faq-question {
+                font-size: 16px;
+                padding: 15px 20px;
+            }
+            .final-cta-section h2 {
+                font-size: 28px;
             }
         }
     </style>
@@ -560,6 +920,100 @@
             </div>
         </div>
 
+        <div class="community-stats-section">
+            <div class="stats-overlay"></div>
+            <div class="stats-content">
+                <h2 class="section-title center-title text-light">Our Growing Universe</h2>
+                <p class="stats-subtitle">Join thousands of readers who have made eBookShala their daily reading companion.</p>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="50000">0</h3>
+                        <p>Active Readers</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="12500">0</h3>
+                        <p>Digital Books</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="counter" data-target="45">0</h3>
+                        <p>Categories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2 class="section-title center-title">Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">Is eBookShala completely free?</div>
+                    <div class="faq-answer">
+                        <p>We offer a vast collection of free public domain books and independent titles. We also have a premium tier for the latest bestsellers and exclusive academic resources.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Can I read books offline?</div>
+                    <div class="faq-answer">
+                        <p>Yes! Once you download our mobile or desktop app, you can save any book to your device and read it without an internet connection.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">What file formats are supported?</div>
+                    <div class="faq-answer">
+                        <p>Our native web reader supports EPUB and PDF formats. You can also download books in formats compatible with Kindle (MOBI) and other popular e-readers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How does cross-device syncing work?</div>
+                    <div class="faq-answer">
+                        <p>Just log into your eBookShala account on any device. Your bookmarks, highlights, and reading progress are automatically saved to the cloud and synced instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="final-cta-section">
+            <h2>Ready to start your reading journey?</h2>
+            <p>Join thousands of readers and unlock a world of knowledge today.</p>
+            <a href="/signup" class="btn btn-secondary cta-btn-inverted">Create Free Account</a>
+        </div>
+
+        <div class="split-section">
+            <div class="split-content reveal-left">
+                <div class="split-text">
+                    <h2 class="section-title">Immerse Yourself in Every Page</h2>
+                    <p>
+                        Discover a reading experience designed for pure focus and comfort. Whether you are revisiting a timeless classic or diving into a modern thriller, our platform adapts to your environment.
+                    </p>
+                    <ul class="feature-list">
+                        <li>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Curated collections spanning 45+ genres
+                        </li>
+                        <li>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Customizable fonts and reading themes
+                        </li>
+                        <li>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Seamless sync across all your devices
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="split-image-container reveal-right">
+                    <img src="https://images.unsplash.com/photo-1495446815901-a7297e633e8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Stack of aesthetic books" class="split-image">
+                </div>
+            </div>
+        </div>
+
         <%- include('partials/footer') %>
 
 </body>
@@ -641,6 +1095,56 @@
 
                 logoObserver.observe(logo);
             }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.counter');
+            
+            const counterObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = +entry.target.getAttribute('data-target');
+                        let count = 0;
+                        
+                        const updateCount = () => {
+                            const increment = target / 40; 
+                            
+                            if (count < target) {
+                                count += increment;
+                                entry.target.innerText = Math.ceil(count).toLocaleString() + '+';
+                                setTimeout(updateCount, 30);
+                            } else {
+                                entry.target.innerText = target.toLocaleString() + '+';
+                            }
+                        };
+                        
+                        updateCount();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(counter => {
+                counterObserver.observe(counter);
+            });
         });
 </script>
 </html>
