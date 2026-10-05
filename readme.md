@@ -52,12 +52,23 @@
 
 ---
 
+## Documentation
+
+For a detailed breakdown of how eBookShala interacts with external data sources, please refer to the **[API Integration Documentation](docs/api-docs.md)**. This guide covers:
+* How the Open Library API is used to populate the catalog.
+* Caching strategies implemented to prevent rate-limiting.
+* How messy external data is transformed and standardized before reaching the frontend.
+
+---
+
 ## Project Structure
 
 ```text
 eBook/
 ├── config/             # Passport.js authentication strategies (Local & Google OAuth)
 ├── controllers/        # Route controllers for books, catalog, comments, and user actions
+├── docs/               # Technical documentation
+│   └── api-docs.md     # Open Library API integration details
 ├── middleware/         # Custom authentication middleware for protected routes
 ├── models/             # Mongoose schemas (User & Book models)
 ├── public/             # Static assets (eBookShala_Logo.svg, uploads, client resources)
