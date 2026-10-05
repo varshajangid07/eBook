@@ -54,7 +54,7 @@
 
 ## Documentation
 
-For a detailed breakdown of how eBookShala interacts with external data sources, please refer to the **[API Integration Documentation](docs/api-docs.md)**. This guide covers:
+For a detailed breakdown of how eBookShala interacts with external data sources, please refer to the **[API Integration Documentation](docs/API_documentation.md)**. This guide covers:
 * How the Open Library API is used to populate the catalog.
 * Caching strategies implemented to prevent rate-limiting.
 * How messy external data is transformed and standardized before reaching the frontend.
