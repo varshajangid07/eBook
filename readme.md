@@ -1,6 +1,6 @@
 <div align="center">
   <img src="public/logo/eBookShala_Logo.svg" alt="eBookShala Logo" width="72" />
-  <h1>eBookShala</h1>
+  <h1>eBookShala</h1> 
   <p><strong>A Modern, Editorial Digital Library & Personal Reading Sanctuary</strong></p>
 
   <p>
